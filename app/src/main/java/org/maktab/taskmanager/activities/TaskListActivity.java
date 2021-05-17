@@ -21,12 +21,6 @@ public class TaskListActivity extends SingleFragmentActivity {
         return taskListFragment;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_list);
-    }
-
     public static Intent newIntent(Context context, String username){
         mUsername = username;
         Intent intent = new Intent(context, TaskListActivity.class);

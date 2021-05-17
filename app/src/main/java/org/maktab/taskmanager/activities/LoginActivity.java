@@ -17,12 +17,6 @@ public class LoginActivity extends SingleFragmentActivity {
         return LoginFragment.newInstance();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-    }
-
     public static Intent newIntent(Context context){
 
         Intent intent = new Intent(context, LoginActivity.class);

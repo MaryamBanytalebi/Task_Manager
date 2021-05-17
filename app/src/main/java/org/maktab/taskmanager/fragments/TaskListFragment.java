@@ -112,15 +112,15 @@ public class TaskListFragment extends Fragment {
         public Fragment createFragment(int position) {
             switch (position){
                 case 0:
-                    TodoFragment todoFragment = new TodoFragment();
+                    TodoFragment todoFragment = TodoFragment.newInstance();
                     return todoFragment;
 
                 case 1:
-                    DoingFragment doingFragment = new DoingFragment();
+                    DoingFragment doingFragment = DoingFragment.newInstance();
                     return doingFragment;
 
                 case 2:
-                    DoneFragment doneFragment = new DoneFragment();
+                    DoneFragment doneFragment = DoneFragment.newInstance();
                     return doneFragment;
 
                 default:

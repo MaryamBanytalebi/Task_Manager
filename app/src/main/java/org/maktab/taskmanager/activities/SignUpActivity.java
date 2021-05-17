@@ -23,12 +23,6 @@ public class SignUpActivity extends SingleFragmentActivity {
         return signUpFragment;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
-    }
-
     public static Intent newIntent(Context context, String userName, String password){
 
         mGetExtraUserName = userName;
