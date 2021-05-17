@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">TaskManager</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="sign_up">SignUp</string>
+    <string name="hint">Hint</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="toast_sign_up">Enter Username and Password</string>
+    <string name="toast_login">The Username or Password entered are incorrect</string>
+    <string name="toast_insert">Enter above Data</string>
+</resources>
