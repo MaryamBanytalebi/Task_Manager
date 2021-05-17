@@ -1,11 +1,12 @@
 package org.maktab.taskmanager.model;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class Task {
 
     private String mTitle;
-    private String mDate;
+    private Date mDate;
     private String mDescription;
     private String mState;
     private UUID mId;
@@ -18,11 +19,11 @@ public class Task {
         mTitle = title;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return mDate;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         mDate = date;
     }
 
@@ -50,7 +51,7 @@ public class Task {
         mId = id;
     }
 
-    public Task(String title, String date, String description, String state) {
+    public Task(String title, String description, Date date, String state) {
         mTitle = title;
         mDate = date;
         mDescription = description;

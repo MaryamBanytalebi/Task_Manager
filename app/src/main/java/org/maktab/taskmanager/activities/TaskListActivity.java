@@ -13,12 +13,11 @@ import org.maktab.taskmanager.fragments.TaskListFragment;
 public class TaskListActivity extends SingleFragmentActivity {
 
     public static final String EXTRA_USERNAME = "org.maktab.taskmanager.activities.extra_username";
-
+    private static String mUsername;
 
     @Override
     public Fragment createFragment() {
-
-        TaskListFragment taskListFragment = TaskListFragment.newInstance(EXTRA_USERNAME);
+        TaskListFragment taskListFragment = TaskListFragment.newInstance(mUsername);
         return taskListFragment;
     }
 
@@ -29,7 +28,7 @@ public class TaskListActivity extends SingleFragmentActivity {
     }
 
     public static Intent newIntent(Context context, String username){
-
+        mUsername = username;
         Intent intent = new Intent(context, TaskListActivity.class);
         intent.putExtra(EXTRA_USERNAME,username);
         return intent;

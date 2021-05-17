@@ -1,8 +1,12 @@
 package org.maktab.taskmanager.repository;
 
+import android.text.format.DateUtils;
+
 import org.maktab.taskmanager.model.Task;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,6 +17,14 @@ public class TaskRepository implements IRepository {
 
     private TaskRepository() {
         mTasks = new ArrayList<>();
+
+        for (int i = 0; i < 50; i++) {
+            Date date;
+            date = DateUtils.randomDate();
+            Task task = new Task("Title", "HomeWork", date, "Todo");
+
+            mTasks.add(task);
+        }
     }
 
     @Override
@@ -54,10 +66,62 @@ public class TaskRepository implements IRepository {
         }
     }
 
+    @Override
+    public List<Task> getTodoTask() {
+        List<Task> todoTask = new ArrayList<>();
+        for (Task task : mTasks){
+            if (task.getState().equalsIgnoreCase("todo")){
+                todoTask.add(task);
+            }
+        }
+        return todoTask;
+    }
+
+    @Override
+    public List<Task> getDoingTask() {
+        List<Task> doingTask = new ArrayList<>();
+        for (Task task : mTasks){
+            if(task.getState().equalsIgnoreCase("doing")){
+                doingTask.add(task);
+            }
+        }
+        return doingTask;
+    }
+
+    @Override
+    public List<Task> getDoneTask() {
+        List<Task> doneTask = new ArrayList<>();
+        for (Task task : mTasks){
+            if (task.getState().equalsIgnoreCase("done")){
+                doneTask.add(task);
+            }
+        }
+        return doneTask;
+    }
+
     public static TaskRepository getInstance() {
         if (sInstance == null)
             sInstance = new TaskRepository();
 
         return sInstance;
+    }
+
+    private static class DateUtils {
+        public static final int YEAR_START = 2000;
+        public static final int YEAR_END = 2020;
+
+        public static Date randomDate() {
+            GregorianCalendar gc = new GregorianCalendar();
+            int year = randBetween(YEAR_START, YEAR_END);
+            gc.set(gc.YEAR, year);
+            int dayOfYear = randBetween(1, gc.getActualMaximum(gc.DAY_OF_YEAR));
+            gc.set(gc.DAY_OF_YEAR, dayOfYear);
+
+            return gc.getTime();
+        }
+
+        public static int randBetween(int start, int end) {
+            return start + (int) Math.round(Math.random() * (end - start));
+        }
     }
 }

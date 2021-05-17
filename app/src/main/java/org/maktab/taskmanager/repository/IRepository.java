@@ -12,4 +12,7 @@ public interface IRepository {
     void insertTask(Task task);
     void updateTask(Task task);
     void deleteTask(Task task);
+    List<Task> getTodoTask();
+    List<Task> getDoingTask();
+    List<Task> getDoneTask();
 }
