@@ -85,7 +85,7 @@ public class SignUpFragment extends Fragment {
         mUsername = view.findViewById(R.id.username_signUp);
         mPassword = view.findViewById(R.id.password_signUp);
         mUsernameForm = view.findViewById(R.id.username_form_signUp);
-        mUsernameForm = view.findViewById(R.id.password_form_signUp);
+        mPasswordForm = view.findViewById(R.id.password_form_signUp);
         mBtnSignUP = view.findViewById(R.id.btnSignUp_SignUP);
     }
 

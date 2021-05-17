@@ -24,8 +24,8 @@
 
     <ImageView
         android:id="@+id/image_profile"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="55dp"
+        android:layout_height="0dp"
         android:layout_alignTop="@id/txtview_title"
         android:layout_alignBottom="@id/txtview_date"
         tools:src="@tools:sample/avatars"

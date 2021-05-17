@@ -1,5 +1,6 @@
 package org.maktab.taskmanager.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.amulyakhare.textdrawable.TextDrawable;
 
 import org.maktab.taskmanager.R;
 import org.maktab.taskmanager.model.Task;
@@ -58,7 +61,7 @@ public class TodoFragment extends Fragment {
     private void initViews(){
         mRecyclerViewTodo.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRepository = TaskRepository.getInstance();
-        List<Task> tasks = mRepository.getTasks();
+        List<Task> tasks = mRepository.getTodoTask();
         mTodoAdapter = new TodoFragment.TodoAdapter(tasks);
         mRecyclerViewTodo.setAdapter(mTodoAdapter);
     }
@@ -82,7 +85,10 @@ public class TodoFragment extends Fragment {
             mTask = task;
             mTextViewTitle.setText(task.getTitle());
             mTextViewDate.setText(task.getDate().toString());
-//            mImageViewProfile.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
+            String string = task.getTitle().substring(0,1);
+            TextDrawable drawable = TextDrawable.builder()
+                    .buildRound(string, Color.RED);
+            mImageViewProfile.setImageDrawable(drawable);
         }
     }
 
