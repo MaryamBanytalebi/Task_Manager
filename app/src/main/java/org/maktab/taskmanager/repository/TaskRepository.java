@@ -18,30 +18,6 @@ public class TaskRepository implements IRepository {
 
     private TaskRepository() {
         mTasks = new ArrayList<>();
-        Random random = new Random();
-
-        for (int i = 0; i < 50; i++) {
-            Date date;
-            String str = "";
-            String title = "";
-            int rand = random.nextInt(3);
-            if (rand == 0) {
-                str = "Todo";
-                title = "Salam";
-            }
-            else if (rand == 1) {
-                str = "Doing";
-                title = "Zana";
-            }
-            else if (rand == 2) {
-                str = "Done";
-                title = "Hi";
-            }
-            date = DateUtils.randomDate();
-            Task task = new Task(title, "HomeWork", date, str);
-
-            mTasks.add(task);
-        }
     }
 
     @Override
