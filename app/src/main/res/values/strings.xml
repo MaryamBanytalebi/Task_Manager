@@ -12,8 +12,15 @@
     <string name="empty_task_list_doing">You Dont Have Any Doing Tasks.</string>
     <string name="empty_task_list_done">You Dont Have Any Done Tasks.</string>
     <string name="empty_task_list_todo">You Dont Have Any Todo Tasks.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="todo">Todo</string>
+    <string name="doing">Doing</string>
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
 
 
 </resources>

@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.maktab.taskmanager.R;
 import org.maktab.taskmanager.model.Task;
@@ -30,6 +31,11 @@ public class DoneFragment extends Fragment {
     private TaskRepository mRepository;
     private DoneAdapter mDoneAdapter;
     private RelativeLayout mLayoutEmptyDone;
+    private FloatingActionButton mActionButtonInsert;
+    private List<Task> mTasks;
+
+    public static final String FRAGMENT_TAG_INSERT_TASK = "InsertTask";
+    public static final int REQUEST_CODE_INSERT_TASK = 0;
 
     public DoneFragment() {
         // Required empty public constructor
@@ -56,21 +62,39 @@ public class DoneFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_done, container, false);
         findViews(view);
         initViews();
+        setlisteners();
         return view;
+    }
+
+    private void setlisteners() {
+        mActionButtonInsert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InsertTaskFragment insertTaskFragment = InsertTaskFragment.newInstance();
+
+                insertTaskFragment.setTargetFragment(
+                        DoneFragment.this,
+                        REQUEST_CODE_INSERT_TASK);
+            }
+        });
     }
 
     private void findViews(View view) {
         mRecyclerViewDone = view.findViewById(R.id.recycler_done);
         mLayoutEmptyDone = view.findViewById(R.id.layout_empty_doneTask);
+        if (mTasks.size() == 0) {
+            mActionButtonInsert = view.findViewById(R.id.fab_empty_done);
+        }else {
+            mActionButtonInsert = view.findViewById(R.id.fab_done);
+        }
     }
 
     private void initViews(){
         mRecyclerViewDone.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRepository = TaskRepository.getInstance();
-        List<Task> tasks = mRepository.getDoneTask();
-        if (tasks.size() == 0)
+
+        if (mTasks.size() == 0)
             mLayoutEmptyDone.setVisibility(View.VISIBLE);
-        mDoneAdapter = new DoneFragment.DoneAdapter(tasks);
+        mDoneAdapter = new DoneAdapter(mTasks);
         mRecyclerViewDone.setAdapter(mDoneAdapter);
     }
 
