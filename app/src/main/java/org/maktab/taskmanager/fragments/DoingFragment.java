@@ -1,9 +1,12 @@
 package org.maktab.taskmanager.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.maktab.taskmanager.R;
 import org.maktab.taskmanager.model.Task;
@@ -29,6 +33,11 @@ public class DoingFragment extends Fragment {
     private TaskRepository mRepository;
     private DoingAdapter mDoingAdapter;
     private RelativeLayout mLayoutEmptyDoing;
+    private FloatingActionButton mActionButtonInsert;
+    private List<Task> mTasks;
+
+    public static final String FRAGMENT_TAG_INSERT_TASK = "InsertTask";
+    public static final int REQUEST_CODE_INSERT_TASK = 0;
 
     public DoingFragment() {
         // Required empty public constructor
@@ -44,6 +53,7 @@ public class DoingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mRepository = TaskRepository.getInstance();
     }
 
     @Override
@@ -52,23 +62,72 @@ public class DoingFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_doing, container, false);
         findViews(view);
+        checkEmptyLayout();
         initViews();
+        listeners();
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode != Activity.RESULT_OK || data == null)
+            return;
+
+        if (requestCode == REQUEST_CODE_INSERT_TASK) {
+            updateUI();
+
+
+        }
+    }
+
+    private void listeners() {
+        mActionButtonInsert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InsertTaskFragment insertTaskFragment = InsertTaskFragment.newInstance();
+
+                insertTaskFragment.setTargetFragment(
+                        DoingFragment.this,
+                        REQUEST_CODE_INSERT_TASK);
+
+                insertTaskFragment.show(
+                        getActivity().getSupportFragmentManager(),
+                        FRAGMENT_TAG_INSERT_TASK);
+
+            }
+        });
     }
 
     private void initViews() {
         mRecyclerViewDoing.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRepository = TaskRepository.getInstance();
-        List<Task> tasks = mRepository.getDoingTask();
-        if (tasks.size() == 0)
+        updateUI();
+    }
+
+    private void updateUI() {
+
+        checkEmptyLayout();
+        if (mDoingAdapter == null) {
+            mDoingAdapter = new DoingAdapter(mTasks);
+            mRecyclerViewDoing.setAdapter(mDoingAdapter);
+        }
+        else {
+            mDoingAdapter.setTasks(mTasks);
+            mDoingAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void checkEmptyLayout() {
+        mTasks = mRepository.getDoingTask();
+        if (mTasks.size()==0)
             mLayoutEmptyDoing.setVisibility(View.VISIBLE);
-        mDoingAdapter = new DoingAdapter(tasks);
-        mRecyclerViewDoing.setAdapter(mDoingAdapter);
+        else
+            mLayoutEmptyDoing.setVisibility(View.GONE);
     }
 
     private void findViews(View view) {
         mRecyclerViewDoing = view.findViewById(R.id.recycler_doing);
         mLayoutEmptyDoing = view.findViewById(R.id.layout_empty_doingTask);
+        mActionButtonInsert = view.findViewById(R.id.fab_doing);
     }
 
     private class DoingHolder extends RecyclerView.ViewHolder{

@@ -1,9 +1,12 @@
 package org.maktab.taskmanager.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,7 +55,7 @@ public class DoneFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mRepository = TaskRepository.getInstance();
     }
 
     @Override
@@ -61,9 +64,21 @@ public class DoneFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_done, container, false);
         findViews(view);
+        checkEmptyLayout();
         initViews();
         setlisteners();
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+            if (resultCode != Activity.RESULT_OK || data == null)
+                return;
+
+            if (requestCode == REQUEST_CODE_INSERT_TASK) {
+                updateUI();
+        }
     }
 
     private void setlisteners() {
@@ -75,6 +90,10 @@ public class DoneFragment extends Fragment {
                 insertTaskFragment.setTargetFragment(
                         DoneFragment.this,
                         REQUEST_CODE_INSERT_TASK);
+
+                insertTaskFragment.show(
+                        getActivity().getSupportFragmentManager(),
+                        FRAGMENT_TAG_INSERT_TASK);
             }
         });
     }
@@ -82,20 +101,33 @@ public class DoneFragment extends Fragment {
     private void findViews(View view) {
         mRecyclerViewDone = view.findViewById(R.id.recycler_done);
         mLayoutEmptyDone = view.findViewById(R.id.layout_empty_doneTask);
-        if (mTasks.size() == 0) {
-            mActionButtonInsert = view.findViewById(R.id.fab_empty_done);
-        }else {
-            mActionButtonInsert = view.findViewById(R.id.fab_done);
-        }
+        mActionButtonInsert = view.findViewById(R.id.fab_done);
     }
 
     private void initViews(){
         mRecyclerViewDone.setLayoutManager(new LinearLayoutManager(getActivity()));
+        updateUI();
+    }
 
-        if (mTasks.size() == 0)
+    private void updateUI() {
+
+        checkEmptyLayout();
+        if (mDoneAdapter == null) {
+            mDoneAdapter = new DoneAdapter(mTasks);
+            mRecyclerViewDone.setAdapter(mDoneAdapter);
+        }
+        else {
+            mDoneAdapter.setTasks(mTasks);
+            mDoneAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void checkEmptyLayout() {
+        mTasks = mRepository.getDoneTask();
+        if (mTasks.size()==0)
             mLayoutEmptyDone.setVisibility(View.VISIBLE);
-        mDoneAdapter = new DoneAdapter(mTasks);
-        mRecyclerViewDone.setAdapter(mDoneAdapter);
+        else
+            mLayoutEmptyDone.setVisibility(View.GONE);
     }
 
     private class DoneHolder extends RecyclerView.ViewHolder{

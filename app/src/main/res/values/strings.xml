@@ -21,6 +21,8 @@
     <string name="save">Save</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
+    <string name="date_picker_title">Date of task:</string>
+    <string name="time_picker_title">Time of task:</string>
 
 
 </resources>

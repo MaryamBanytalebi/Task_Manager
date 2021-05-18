@@ -63,7 +63,7 @@ public class TaskRepository implements IRepository {
     public List<Task> getTodoTask() {
         List<Task> todoTask = new ArrayList<>();
         for (Task task : mTasks){
-            if (task.getState().equalsIgnoreCase("todo")){
+            if (task.getState().equalsIgnoreCase("TODO")){
                 todoTask.add(task);
             }
         }
@@ -74,7 +74,7 @@ public class TaskRepository implements IRepository {
     public List<Task> getDoingTask() {
         List<Task> doingTask = new ArrayList<>();
         for (Task task : mTasks){
-            if(task.getState().equalsIgnoreCase("doing")){
+            if(task.getState().equalsIgnoreCase("DOING")){
                 doingTask.add(task);
             }
         }
@@ -85,7 +85,7 @@ public class TaskRepository implements IRepository {
     public List<Task> getDoneTask() {
         List<Task> doneTask = new ArrayList<>();
         for (Task task : mTasks){
-            if (task.getState().equalsIgnoreCase("done")){
+            if (task.getState().equalsIgnoreCase("DONE")){
                 doneTask.add(task);
             }
         }
