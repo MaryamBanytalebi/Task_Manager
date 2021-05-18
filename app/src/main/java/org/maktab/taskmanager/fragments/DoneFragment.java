@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -28,7 +29,7 @@ public class DoneFragment extends Fragment {
     private RecyclerView mRecyclerViewDone;
     private TaskRepository mRepository;
     private DoneAdapter mDoneAdapter;
-    private LinearLayout mLayoutEmptyDone;
+    private RelativeLayout mLayoutEmptyDone;
 
     public DoneFragment() {
         // Required empty public constructor
