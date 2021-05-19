@@ -34,10 +34,9 @@ import java.util.List;
 public class InsertTaskFragment extends DialogFragment {
 
     public static final int REQUEST_CODE_DATE_PICKER = 0;
-    public static final String FRAGMENT_TAG_DATE_PICKER = "DatePicker";
-    public static final String EXTRA_USER_SELECTED_DATE = "org.maktab.taskmanager.userSelectedTask";
-    public static final String FRAGMENT_TAG_TIME_PICKER = "TimePicker";
     public static final int REQUEST_CODE_TIME_PICKER = 1;
+    public static final String FRAGMENT_TAG_DATE_PICKER = "DatePicker";
+    public static final String FRAGMENT_TAG_TIME_PICKER = "TimePicker";
     public static final String BUNDLE_KEY_DATE = "BUNDLE_KEY_DATE";
     public static final String BUNDLE_KEY_TIME = "BUNDLE_KEY_TIME";
 
@@ -246,10 +245,10 @@ public class InsertTaskFragment extends DialogFragment {
     }
 
     private DateFormat getDateFormat() {
-        return new SimpleDateFormat("yyyy/MM/dd");
+        return new SimpleDateFormat("MMM dd,yyyy");
     }
 
     private DateFormat getTimeFormat() {
-        return new SimpleDateFormat("HH:mm:ss");
+        return new SimpleDateFormat("h:mm a");
     }
 }

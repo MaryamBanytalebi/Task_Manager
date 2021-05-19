@@ -1,6 +1,7 @@
 package org.maktab.taskmanager.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,8 @@ import org.maktab.taskmanager.R;
 import org.maktab.taskmanager.model.Task;
 import org.maktab.taskmanager.repository.TaskRepository;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class DoingFragment extends Fragment {
@@ -48,6 +52,13 @@ public class DoingFragment extends Fragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        updateUI();
     }
 
     @Override
@@ -148,11 +159,34 @@ public class DoingFragment extends Fragment {
         public void bindTaskDoing(Task task){
             mTask = task;
             mTextViewTitle.setText(task.getTitle());
-            mTextViewDate.setText(task.getDate().toString());
+            String date = createDateFormat(task);
+            mTextViewDate.setText(date);
             String string = task.getTitle().substring(0,1);
             TextDrawable drawable = TextDrawable.builder()
                     .buildRound(string, Color.RED);
             mImageViewProfile.setImageDrawable(drawable);
+        }
+
+        private DateFormat getDateFormat() {
+            //"yyyy/MM/dd"
+            return new SimpleDateFormat("MMM dd,yyyy");
+        }
+
+        private DateFormat getTimeFormat() {
+            //"HH:mm:ss"
+            return new SimpleDateFormat("h:mm a");
+        }
+        private String createDateFormat (Task task){
+            String totalDate = "";
+            DateFormat dateFormat = getDateFormat();
+            String date = dateFormat.format(task.getDate());
+
+            DateFormat timeFormat = getTimeFormat();
+            String time = timeFormat.format(task.getDate());
+
+            totalDate = date + "  " + time;
+
+            return totalDate;
         }
     }
 

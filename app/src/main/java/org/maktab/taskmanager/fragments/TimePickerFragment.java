@@ -28,7 +28,7 @@ import java.util.Date;
 public class TimePickerFragment extends DialogFragment {
 
 
-    public static final String ARGS_TASK_TIME = "crimeTime";
+    public static final String ARGS_TASK_TIME = "taskTime";
     public static final String EXTRA_USER_SELECTED_TIME = "org.maktab.taskmanager.userSelectedTime";
     private Date mTaskDate;
     private int mSecond;
@@ -39,10 +39,10 @@ public class TimePickerFragment extends DialogFragment {
     public TimePickerFragment() {
         // Required empty public constructor
     }
-    public static TimePickerFragment newInstance(Date crimeDate) {
+    public static TimePickerFragment newInstance(Date taskDate) {
         TimePickerFragment fragment = new TimePickerFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARGS_TASK_TIME, crimeDate);
+        args.putSerializable(ARGS_TASK_TIME, taskDate);
         fragment.setArguments(args);
         return fragment;
     }
