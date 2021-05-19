@@ -1,6 +1,7 @@
 package org.maktab.taskmanager.repository;
 
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import org.maktab.taskmanager.model.Task;
 
@@ -18,6 +19,7 @@ public class TaskRepository implements IRepository {
 
     private TaskRepository() {
         mTasks = new ArrayList<>();
+        Log.d("TaskSize_constructor" , " " + mTasks.size());
     }
 
     @Override
@@ -59,6 +61,10 @@ public class TaskRepository implements IRepository {
         }
     }
 
+    public void deleteAllTasks(){
+        mTasks.clear();
+    }
+
     @Override
     public List<Task> getTodoTask() {
         List<Task> todoTask = new ArrayList<>();
@@ -97,24 +103,5 @@ public class TaskRepository implements IRepository {
             sInstance = new TaskRepository();
 
         return sInstance;
-    }
-
-    private static class DateUtils {
-        public static final int YEAR_START = 2000;
-        public static final int YEAR_END = 2020;
-
-        public static Date randomDate() {
-            GregorianCalendar gc = new GregorianCalendar();
-            int year = randBetween(YEAR_START, YEAR_END);
-            gc.set(gc.YEAR, year);
-            int dayOfYear = randBetween(1, gc.getActualMaximum(gc.DAY_OF_YEAR));
-            gc.set(gc.DAY_OF_YEAR, dayOfYear);
-
-            return gc.getTime();
-        }
-
-        public static int randBetween(int start, int end) {
-            return start + (int) Math.round(Math.random() * (end - start));
-        }
     }
 }

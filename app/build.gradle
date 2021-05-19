@@ -44,5 +44,7 @@ dependencies {
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
+
 
 }

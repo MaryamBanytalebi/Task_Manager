@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.maktab.taskmanager.R;
@@ -36,13 +37,18 @@ public abstract class TabsFragment extends Fragment {
     public static final int REQUEST_CODE_INSERT_TASK = 0;
     public static final String FRAGMENT_TAG_EDIT_TASK = "EditTask";
     public static final int REQUEST_CODE_EDIT_TASK = 1;
+    public static final String FRAGMENT_TAG_DELETE_ALL_TASK = "EditTask";
+    public static final int REQUEST_CODE_DELETE_ALL_TASK = 2;
+
     private RecyclerView mRecyclerView;
     private TabsAdapter mAdapter;
     private IRepository mRepository;
     private List<Task> mTasks;
     private RelativeLayout mLayoutEmpty;
     private FloatingActionButton mActionButtonInsert;
-
+    private FloatingActionButton mActionButtonDelete;
+    private FloatingActionButton mActionButtonLogOut;
+    private FloatingActionsMenu mFloatingActionsMenu;
 
     public TabsFragment() {
         // Required empty public constructor
@@ -90,7 +96,10 @@ public abstract class TabsFragment extends Fragment {
     private void findViews(View view) {
         mRecyclerView = view.findViewById(R.id.recycler);
         mLayoutEmpty = view.findViewById(R.id.layout_empty);
-        mActionButtonInsert = view.findViewById(R.id.fab);
+        mActionButtonInsert = view.findViewById(R.id.fam);
+        mActionButtonInsert = view.findViewById(R.id.fab_insert);
+        mActionButtonDelete = view.findViewById(R.id.fab_delete);
+        mActionButtonLogOut = view.findViewById(R.id.fab_logOut);
     }
 
     private void initViews() {
@@ -112,6 +121,28 @@ public abstract class TabsFragment extends Fragment {
                         getActivity().getSupportFragmentManager(),
                         FRAGMENT_TAG_INSERT_TASK);
 
+            }
+        });
+
+        mActionButtonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DeleteAllFragment deleteAllFragment = DeleteAllFragment.newInstance();
+
+                deleteAllFragment.setTargetFragment(
+                        TabsFragment.this,
+                        REQUEST_CODE_DELETE_ALL_TASK);
+
+                deleteAllFragment.show(
+                        getActivity().getSupportFragmentManager(),
+                        FRAGMENT_TAG_DELETE_ALL_TASK);
+
+            }
+        });
+        mActionButtonLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
             }
         });
     }

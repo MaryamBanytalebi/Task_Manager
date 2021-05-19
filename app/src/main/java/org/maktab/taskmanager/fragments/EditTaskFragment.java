@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -129,8 +130,18 @@ public class EditTaskFragment extends DialogFragment {
         mBtnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dismiss();
-            }
+                if (mTitleForm.isEnabled()) {
+                    if (validInput()) {
+                        sendResult();
+                        dismiss();
+                    } else {
+                        int strId = R.string.toast_insert;
+                        Toast toast = Toast.makeText(getActivity(), strId, Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                } else {
+                    dismiss();
+                }            }
         });
 
         mBtnDelete.setOnClickListener(new View.OnClickListener() {
