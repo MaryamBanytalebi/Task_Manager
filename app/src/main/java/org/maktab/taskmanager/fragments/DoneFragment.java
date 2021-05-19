@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,7 +41,9 @@ public class DoneFragment extends Fragment {
     private List<Task> mTasks;
 
     public static final String FRAGMENT_TAG_INSERT_TASK = "InsertTask";
+    public static final String FRAGMENT_TAG_EDIT_TASK = "EditTaskTask";
     public static final int REQUEST_CODE_INSERT_TASK = 0;
+    public static final int REQUEST_CODE_EDIT_TASK = 1;
     public static final String TAG = "DoneFragment";
 
     public DoneFragment() {
@@ -92,7 +93,7 @@ public class DoneFragment extends Fragment {
         findViews(view);
         checkEmptyLayout();
         initViews();
-        setlisteners();
+        setListeners();
         Log.d(TAG,"DoneFragmentCreateView");
         return view;
     }
@@ -103,12 +104,12 @@ public class DoneFragment extends Fragment {
             if (resultCode != Activity.RESULT_OK || data == null)
                 return;
 
-            if (requestCode == REQUEST_CODE_INSERT_TASK) {
+            if (requestCode == REQUEST_CODE_INSERT_TASK || requestCode == REQUEST_CODE_EDIT_TASK) {
                 updateUI();
         }
     }
 
-    private void setlisteners() {
+    private void setListeners() {
         mActionButtonInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,6 +170,16 @@ public class DoneFragment extends Fragment {
             mTextViewTitle = itemView.findViewById(R.id.txtview_title);
             mTextViewDate = itemView.findViewById(R.id.txtview_date);
             mImageViewProfile = itemView.findViewById(R.id.image_profile);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EditTaskFragment editTaskFragment = EditTaskFragment.newInstance(mTask.getId());
+                    editTaskFragment.setTargetFragment(DoneFragment.this,
+                            REQUEST_CODE_EDIT_TASK);
+                    editTaskFragment.show(getActivity().getSupportFragmentManager(),
+                            FRAGMENT_TAG_EDIT_TASK);
+                }
+            });
         }
 
         public void bindTaskDone(Task task) {
