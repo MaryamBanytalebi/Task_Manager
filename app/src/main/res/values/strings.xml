@@ -9,9 +9,7 @@
     <string name="toast_sign_up">Enter Username and Password</string>
     <string name="toast_login">The Username or Password entered are incorrect</string>
     <string name="toast_insert">Enter above Data</string>
-    <string name="empty_task_list_doing">You Dont Have Any Doing Tasks.</string>
-    <string name="empty_task_list_done">You Dont Have Any Done Tasks.</string>
-    <string name="empty_task_list_todo">You Dont Have Any Todo Tasks.</string>
+    <string name="empty_task_list">You Dont Have Any Tasks.</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="todo">Todo</string>
