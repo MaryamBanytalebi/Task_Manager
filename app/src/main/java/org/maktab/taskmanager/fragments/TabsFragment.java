@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public abstract class TabsFragment extends Fragment {
     private FloatingActionButton mActionButtonInsert;
     private FloatingActionButton mActionButtonDelete;
     private FloatingActionButton mActionButtonLogOut;
-    private FloatingActionsMenu mFloatingActionsMenu;
+    private boolean isVisible;
 
     public TabsFragment() {
         // Required empty public constructor
@@ -89,6 +90,30 @@ public abstract class TabsFragment extends Fragment {
 
         if (requestCode == REQUEST_CODE_INSERT_TASK || requestCode == REQUEST_CODE_EDIT_TASK) {
             updateUI();
+
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getUserVisibleHint() && !isVisible) {
+            //your code
+        }
+        isVisible = true;
+    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser && isVisible) {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //your code
+                }
+            }, 500);
 
         }
     }
