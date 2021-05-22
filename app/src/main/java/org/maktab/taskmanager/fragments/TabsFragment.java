@@ -20,13 +20,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.maktab.taskmanager.R;
 import org.maktab.taskmanager.model.Task;
 import org.maktab.taskmanager.repository.IRepository;
-import org.maktab.taskmanager.repository.TaskRepository;
+import org.maktab.taskmanager.repository.TaskDBRepository;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -68,7 +67,7 @@ public abstract class TabsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mRepository = TaskRepository.getInstance();
+        mRepository = TaskDBRepository.getInstance(getActivity());
     }
 
     @Override

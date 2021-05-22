@@ -51,11 +51,15 @@ public class Task {
         mId = id;
     }
 
-    public Task(String title, String description, Date date, String state) {
+    public Task(UUID id, String title, String description, Date date, String state) {
         mTitle = title;
         mDate = date;
         mDescription = description;
         mState = state;
-        mId = UUID.randomUUID();
+        mId = id;
+    }
+
+    public Task(String title, String description, Date date, String state) {
+        this(UUID.randomUUID(),title,description,date,state);
     }
 }

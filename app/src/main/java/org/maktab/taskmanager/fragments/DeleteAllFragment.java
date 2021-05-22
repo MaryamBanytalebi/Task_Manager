@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import org.maktab.taskmanager.R;
 import org.maktab.taskmanager.model.Task;
 import org.maktab.taskmanager.repository.IRepository;
-import org.maktab.taskmanager.repository.TaskRepository;
+import org.maktab.taskmanager.repository.TaskDBRepository;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class DeleteAllFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRepository = TaskRepository.getInstance();
+        mRepository = TaskDBRepository.getInstance(getActivity());
         mTasks = mRepository.getTasks();
 
     }

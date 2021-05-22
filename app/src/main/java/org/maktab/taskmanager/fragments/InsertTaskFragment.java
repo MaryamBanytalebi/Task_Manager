@@ -22,7 +22,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.maktab.taskmanager.R;
 import org.maktab.taskmanager.model.Task;
 import org.maktab.taskmanager.repository.IRepository;
-import org.maktab.taskmanager.repository.TaskRepository;
+import org.maktab.taskmanager.repository.TaskDBRepository;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -71,7 +71,7 @@ public class InsertTaskFragment extends DialogFragment {
 
         }
         mCalendar = Calendar.getInstance();
-        mRepository = TaskRepository.getInstance();
+        mRepository = TaskDBRepository.getInstance(getActivity());
     }
 
     @Override

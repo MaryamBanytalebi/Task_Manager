@@ -21,7 +21,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.maktab.taskmanager.R;
 import org.maktab.taskmanager.model.Task;
-import org.maktab.taskmanager.repository.TaskRepository;
+import org.maktab.taskmanager.repository.IRepository;
+import org.maktab.taskmanager.repository.TaskDBRepository;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -47,7 +48,7 @@ public class EditTaskFragment extends DialogFragment {
     private TextInputEditText mDescription;
 
     private UUID mTaskId;
-    private TaskRepository mRepository;
+    private IRepository mRepository;
     private Task mTask;
     private Calendar mCalendar;
     private boolean mFlag;
@@ -68,9 +69,10 @@ public class EditTaskFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mTaskId = (UUID) getArguments().getSerializable(ARG_TASK_ID);
-        }
+        UUID taskId = (UUID) getArguments().getSerializable(ARG_TASK_ID);
+        mRepository = TaskDBRepository.getInstance(getActivity());
+        mTask = mRepository.getTask(taskId);
+        mCalendar = Calendar.getInstance();
     }
 
     @Override
@@ -113,17 +115,24 @@ public class EditTaskFragment extends DialogFragment {
 
     private void setData(Task task){
         mTitle.setText(task.getTitle());
+        mTitleForm.setEnabled(false);
         mDescription.setText(task.getDescription());
+        mDescriptionForm.setEnabled(false);
         DateFormat dateFormat = getDateFormat();
         mBtnDate.setText(dateFormat.format(task.getDate()));
+        mBtnDate.setEnabled(false);
         DateFormat timeFormat = getTimeFormat();
         mBtnTime.setText(timeFormat.format(task.getDate()));
+        mBtnTime.setEnabled(false);
         if (task.getState().equalsIgnoreCase("Todo"))
             mRadioButtonTodo.setChecked(true);
         else if (task.getState().equalsIgnoreCase("Doing"))
             mRadioButtonDoing.setChecked(true);
         else if (task.getState().equalsIgnoreCase("Done"))
             mRadioButtonDone.setChecked(true);
+        mRadioButtonTodo.setEnabled(false);
+        mRadioButtonDoing.setEnabled(false);
+        mRadioButtonDone.setEnabled(false);
     }
 
     private void setListeners(){

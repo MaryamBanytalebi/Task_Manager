@@ -20,6 +20,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.maktab.taskmanager.R;
 import org.maktab.taskmanager.activities.SignUpActivity;
 import org.maktab.taskmanager.activities.TaskListActivity;
+import org.maktab.taskmanager.model.User;
+import org.maktab.taskmanager.repository.UserDBRepository;
+
+import java.util.Objects;
 
 public class LoginFragment extends Fragment {
 
@@ -32,6 +36,7 @@ public class LoginFragment extends Fragment {
     private TextInputEditText mUsername;
     private TextInputEditText mPassword;
     private Button mBtnSignUp,mBtnLogin;
+    private UserDBRepository mUserRepository;
 
     private String user, pass;
 
@@ -50,6 +55,11 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mUserRepository = UserDBRepository.getInstance(getActivity());
+        if (savedInstanceState != null) {
+            user = savedInstanceState.getString(BUNDLE_KEY_USERNAME);
+            pass = savedInstanceState.getString(BUNDLE_KEY_PASSWORD);
+        }
     }
 
     @Override
@@ -118,6 +128,7 @@ public class LoginFragment extends Fragment {
     }
 
     private boolean validateInput() {
+        User user = mUserRepository.getUser(Objects.requireNonNull(mUsername.getText()).toString());
         if (mUsername.getText().toString().trim().isEmpty() && mPassword.getText().toString().trim().isEmpty()) {
             mUsernameForm.setErrorEnabled(true);
             mUsernameForm.setError("Field cannot be empty!");
@@ -132,14 +143,22 @@ public class LoginFragment extends Fragment {
             mPasswordForm.setErrorEnabled(true);
             mPasswordForm.setError("Field cannot be empty!");
             return false;
-        } else if (!mUsername.getText().toString().equals(user) ||
-                !mPassword.getText().toString().equals(pass)) {
-            Toast toast = Toast.makeText(getActivity(), R.string.toast_login, Toast.LENGTH_SHORT);
-            toast.show();
-            return false;
+        } else{
+            String inputUsername = user.getUsername();
+            String inputPassword = user.getPassword();
+            if (!mUsername.getText().toString().equals(inputUsername) ||
+                    !mPassword.getText().toString().equals(inputPassword)) {
+                callToast(R.string.toast_login);
+                return false;
+            }
         }
         mUsernameForm.setErrorEnabled(false);
         mPasswordForm.setErrorEnabled(false);
         return true;
+    }
+
+    private void callToast(int stringId) {
+        Toast toast = Toast.makeText(getActivity(), stringId, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

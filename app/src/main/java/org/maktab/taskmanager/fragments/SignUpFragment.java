@@ -14,6 +14,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.maktab.taskmanager.R;
+import org.maktab.taskmanager.model.User;
+import org.maktab.taskmanager.repository.UserDBRepository;
+
+import java.util.Objects;
 
 public class SignUpFragment extends Fragment {
 
@@ -29,6 +33,7 @@ public class SignUpFragment extends Fragment {
     private TextInputLayout mUsernameForm;
     private TextInputLayout mPasswordForm;
     private Button mBtnSignUP;
+    private UserDBRepository mUserRepository;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -50,6 +55,7 @@ public class SignUpFragment extends Fragment {
         if (getArguments() != null) {
             mUser = getArguments().getString(ARG_USERNAME);
             mPass = getArguments().getString(ARG_PASSWORD);
+            mUserRepository = UserDBRepository.getInstance(getActivity());
         }
     }
 
@@ -72,13 +78,23 @@ public class SignUpFragment extends Fragment {
                 mUsernameForm.setErrorEnabled(false);
                 mPasswordForm.setErrorEnabled(false);
                 if (validateInput()){
-                    Intent intent = new Intent();
-                    intent.putExtra(EXTRA_USERNAME_SIGN_UP,mUsername.getText().toString());
-                    intent.putExtra(EXTRA_PASSWORD_SIGN_UP,mPassword.getText().toString());
-                    getActivity().setResult(getActivity().RESULT_OK,intent);
+                    setUserPassResult();
+                    getActivity().finish();
+
                 }
             }
         });
+    }
+
+    private void setUserPassResult() {
+        String username = Objects.requireNonNull(mUsername.getText()).toString();
+        String password = Objects.requireNonNull(mPassword.getText()).toString();
+        User user = new User(username,password);
+        mUserRepository.insertUser(user);
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_USERNAME_SIGN_UP,mUsername.getText().toString());
+        intent.putExtra(EXTRA_PASSWORD_SIGN_UP,mPassword.getText().toString());
+        getActivity().setResult(getActivity().RESULT_OK,intent);
     }
 
     private void findViews(View view) {
