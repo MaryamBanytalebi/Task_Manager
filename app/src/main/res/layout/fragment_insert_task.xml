@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:padding="10dp"
+        android:padding="5dp"
         android:hint="@string/title">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title_form_insert"
-        android:padding="10dp"
+        android:padding="5dp"
         android:hint="@string/description">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -38,6 +38,15 @@
             android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_picker"
+        android:gravity="center"
+        android:layout_below="@id/description_form_insert"
+        android:padding="5dp"
+        android:orientation="horizontal">
 
     <Button
         android:id="@+id/btn_date_insert"
@@ -52,13 +61,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/time"/>
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/layout_checkbox"
         android:padding="10dp"
-        android:layout_below="@id/btn_time_insert"
+        android:layout_below="@id/layout_picker"
         android:orientation="horizontal">
 
         <CheckBox
@@ -86,7 +97,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="5dp"
         android:layout_below="@id/layout_checkbox"
         android:orientation="horizontal">
 

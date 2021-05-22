@@ -63,7 +63,6 @@
         app:fab_addButtonColorNormal="@color/colorAccent"
         app:fab_addButtonColorPressed="@color/colorPrimary"
         app:fab_addButtonPlusIconColor="@color/cardview_dark_background"
-        app:fab_labelStyle="@style/menu_labels_style"
         app:fab_addButtonSize="normal"
         app:fab_labelsPosition="left"
         android:layout_alignParentRight="true">
@@ -74,7 +73,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/fab"
+            android:scaleType="centerInside"
             app:fab_labelStyle="@style/menu_labels_style"
             app:fab_size="mini"
             app:fab_title="@string/fab_insert"/>
@@ -83,8 +83,9 @@
             android:id="@+id/fab_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_trash_can"
-            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_delete"
+            android:backgroundTint="@color/fab"
+            android:scaleType="centerInside"
             app:fab_size="mini"
             app:fab_title="@string/fab_delete"/>
 
@@ -92,7 +93,8 @@
             android:id="@+id/fab_logOut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/fab"
+            android:scaleType="centerInside"
             android:src="@drawable/ic_exit"
             app:fab_size="mini"
             app:fab_title="@string/fab_logOut"/>
