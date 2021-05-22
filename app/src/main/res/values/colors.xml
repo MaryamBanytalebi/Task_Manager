@@ -10,7 +10,7 @@
     <color name="colorPrimaryDark">#ba6b6c</color>
     <color name="colorAccent">#ffcccb</color>
     <color name="white">#ffffff</color>
-    <color name="circleImage">#ef5350</color>
+    <color name="circleImage">#ff80aa</color>
     <color name="background_task_row">#ffebee</color>
     <color name="fab">#ffc7b3</color>
 </resources>

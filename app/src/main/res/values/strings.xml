@@ -9,6 +9,7 @@
     <string name="toast_sign_up">Enter Username and Password</string>
     <string name="toast_login">The Username or Password entered are incorrect</string>
     <string name="toast_insert">Enter above Data</string>
+    <string name="no_tasks">There aren\'t any Tasks.</string>
     <string name="empty_task_list">You Dont Have Any Tasks.</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
@@ -26,7 +27,9 @@
     <string name="delete_all_title">Delete all tasks:</string>
     <string name="delete_all_question">Are you sure?</string>
     <string name="yes">Yes</string>
-    <string name="no">No</string><string name="fab_insert">  Insert  </string>
+    <string name="no">No</string>
+    <string name="exit">Exit</string>
+    <string name="fab_insert">  Insert  </string>
     <string name="fab_delete">  Delete  </string>
     <string name="fab_logOut">  LogOut  </string>
 </resources>

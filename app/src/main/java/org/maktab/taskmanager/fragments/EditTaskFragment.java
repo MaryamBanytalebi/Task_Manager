@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -40,7 +40,7 @@ public class EditTaskFragment extends DialogFragment {
     public static final String BUNDLE_KEY_TIME = "time picker";
 
     private Button mBtnSave, mBtnDelete, mBtnEdit, mBtnDate, mBtnTime;
-    private CheckBox mCheckBoxTodo, mCheckBoxDoing, mCheckBoxDone;
+    private RadioButton mRadioButtonTodo, mRadioButtonDoing, mRadioButtonDone;
     private TextInputLayout mTitleForm;
     private TextInputLayout mDescriptionForm;
     private TextInputEditText mTitle;
@@ -119,11 +119,11 @@ public class EditTaskFragment extends DialogFragment {
         DateFormat timeFormat = getTimeFormat();
         mBtnTime.setText(timeFormat.format(task.getDate()));
         if (task.getState().equalsIgnoreCase("Todo"))
-            mCheckBoxTodo.setChecked(true);
+            mRadioButtonTodo.setChecked(true);
         else if (task.getState().equalsIgnoreCase("Doing"))
-            mCheckBoxDoing.setChecked(true);
+            mRadioButtonDoing.setChecked(true);
         else if (task.getState().equalsIgnoreCase("Done"))
-            mCheckBoxDone.setChecked(true);
+            mRadioButtonDone.setChecked(true);
     }
 
     private void setListeners(){
@@ -188,9 +188,9 @@ public class EditTaskFragment extends DialogFragment {
     private boolean validInput() {
         if (mTitle.getText() != null && mDescription.getText() != null &&
                 mBtnDate.getText() != null && mBtnTime != null &&
-                (mCheckBoxDoing.isChecked()
-                        || mCheckBoxDone.isChecked()
-                        || mCheckBoxTodo.isChecked())){
+                (mRadioButtonDoing.isChecked()
+                        || mRadioButtonDone.isChecked()
+                        || mRadioButtonTodo.isChecked())){
             return true;
         }else
             return false;
@@ -211,11 +211,11 @@ public class EditTaskFragment extends DialogFragment {
 
     private void editTask(){
         String state = "";
-        if (mCheckBoxDoing.isChecked())
+        if (mRadioButtonDoing.isChecked())
             state = "DOING";
-        if (mCheckBoxTodo.isChecked())
+        if (mRadioButtonTodo.isChecked())
             state = "TODO";
-        if (mCheckBoxDone.isChecked())
+        if (mRadioButtonDone.isChecked())
             state = "DONE";
         mTask.setTitle(mTitle.getText().toString());
         mTask.setDescription(mDescription.getText().toString());
@@ -273,8 +273,8 @@ public class EditTaskFragment extends DialogFragment {
         mBtnSave = view.findViewById(R.id.btn_save_edit);
         mBtnDelete = view.findViewById(R.id.btn_delete_edit);
         mBtnEdit = view.findViewById(R.id.btn_edit_edit);
-        mCheckBoxTodo = view.findViewById(R.id.checkBox_todo_edit);
-        mCheckBoxDoing = view.findViewById(R.id.checkBox_doing_edit);
-        mCheckBoxDone = view.findViewById(R.id.checkBox_done_edit);
+        mRadioButtonTodo = view.findViewById(R.id.radioBtn_todo_edit);
+        mRadioButtonDoing = view.findViewById(R.id.radioBtn_doing_edit);
+        mRadioButtonDone = view.findViewById(R.id.radioBtn_done_edit);
     }
 }

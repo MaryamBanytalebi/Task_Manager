@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:id="@+id/layout_pickerBtn"
+        android:id="@+id/layout_pickerBtn_edit"
         android:padding="5dp"
         android:layout_below="@id/description_form_edit"
         android:orientation="horizontal">
@@ -67,41 +67,41 @@
         android:text="@string/time" />
     </LinearLayout>
 
-    <LinearLayout
+    <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/layout_checkbox_edit"
-        android:padding="5dp"
-        android:layout_below="@id/layout_pickerBtn"
+        android:id="@+id/radioGroup_edit"
+        android:gravity="center"
+        android:layout_below="@id/layout_pickerBtn_edit"
         android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/checkBox_todo_edit"
+        <RadioButton
+            android:id="@+id/radioBtn_todo_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/todo" />
 
-        <CheckBox
-            android:id="@+id/checkBox_doing_edit"
+        <RadioButton
+            android:id="@+id/radioBtn_doing_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/doing" />
 
-        <CheckBox
-            android:id="@+id/checkBox_done_edit"
+        <RadioButton
+            android:id="@+id/radioBtn_done_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/done" />
-    </LinearLayout>
+    </RadioGroup>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:layout_below="@id/layout_checkbox_edit"
+        android:layout_below="@id/radioGroup_edit"
         android:orientation="horizontal">
 
         <Button

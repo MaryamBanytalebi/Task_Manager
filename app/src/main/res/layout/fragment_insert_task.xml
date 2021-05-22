@@ -50,55 +50,57 @@
 
     <Button
         android:id="@+id/btn_date_insert"
-        android:layout_below="@id/description_form_insert"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginRight="2dp"
         android:text="@string/date"/>
 
     <Button
         android:id="@+id/btn_time_insert"
-        android:layout_below="@id/btn_date_insert"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/time"/>
+        android:layout_weight="1"
+        android:layout_marginLeft="2dp"
+        android:text="@string/time" />
     </LinearLayout>
 
 
-    <LinearLayout
+    <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/layout_checkbox"
-        android:padding="10dp"
+        android:id="@+id/RadioGroup"
+        android:gravity="center"
         android:layout_below="@id/layout_picker"
         android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/checkBox_todo"
+        <RadioButton
+            android:id="@+id/radioBtn_todo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/todo" />
 
-        <CheckBox
-            android:id="@+id/checkBox_doing"
+        <RadioButton
+            android:id="@+id/radioBtn_doing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/doing" />
 
-        <CheckBox
-            android:id="@+id/checkBox_done"
+        <RadioButton
+            android:id="@+id/radioBtn_done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/done" />
-    </LinearLayout>
+    </RadioGroup>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:layout_below="@id/layout_checkbox"
+        android:layout_below="@id/RadioGroup"
         android:orientation="horizontal">
 
         <Button

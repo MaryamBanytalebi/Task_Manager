@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,7 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="60dp"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -59,35 +58,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         app:fab_addButtonColorNormal="@color/colorAccent"
         app:fab_addButtonColorPressed="@color/colorPrimary"
         app:fab_addButtonPlusIconColor="@color/cardview_dark_background"
+        app:fab_expandDirection="left"
         app:fab_addButtonSize="normal"
-        app:fab_labelsPosition="left"
-        android:layout_alignParentRight="true">
+        app:fab_labelsPosition="left">
 
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_insert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add"
             android:backgroundTint="@color/fab"
             android:scaleType="centerInside"
+            android:src="@drawable/ic_add"
             app:fab_labelStyle="@style/menu_labels_style"
             app:fab_size="mini"
-            app:fab_title="@string/fab_insert"/>
+            app:fab_title="@string/fab_insert" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_delete"
             android:backgroundTint="@color/fab"
             android:scaleType="centerInside"
+            android:src="@drawable/ic_delete"
             app:fab_size="mini"
-            app:fab_title="@string/fab_delete"/>
+            app:fab_title="@string/fab_delete" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_logOut"
@@ -97,7 +96,7 @@
             android:scaleType="centerInside"
             android:src="@drawable/ic_exit_to_app"
             app:fab_size="mini"
-            app:fab_title="@string/fab_logOut"/>
+            app:fab_title="@string/fab_logOut" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

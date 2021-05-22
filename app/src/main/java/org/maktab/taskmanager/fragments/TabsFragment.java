@@ -208,8 +208,9 @@ public abstract class TabsFragment extends Fragment {
             String date = createDateFormat(task);
             mTextViewDate.setText(date);
             String string = task.getTitle().substring(0,1);
+            int color = Color.parseColor("#ff80aa");
             TextDrawable drawable = TextDrawable.builder()
-                    .buildRound(string, Color.RED);
+                    .buildRound(string, color);
             mImageViewProfile.setImageDrawable(drawable);
         }
         private DateFormat getDateFormat() {

@@ -15,11 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.maktab.taskmanager.R;
+import org.maktab.taskmanager.model.Task;
 import org.maktab.taskmanager.repository.IRepository;
 import org.maktab.taskmanager.repository.TaskRepository;
 
+import java.util.List;
+
 public class DeleteAllFragment extends DialogFragment {
 
+    private List<Task> mTasks;
 
     private IRepository mRepository;
 
@@ -38,16 +42,9 @@ public class DeleteAllFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mRepository = TaskRepository.getInstance();
-    }
-/*
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_delete_all, container, false);
+        mTasks = mRepository.getTasks();
 
-        return view;
-    }*/
+    }
 
     @NonNull
     @Override
@@ -58,18 +55,24 @@ public class DeleteAllFragment extends DialogFragment {
         /*findViews(view);
         initViews();*/
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.delete_all_title)
-                .setIcon(R.drawable.ic_high_importance)
-                .setView(view)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mRepository.deleteAllTasks();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                if (mTasks.size() != 0){
 
-                    }
-                })
-                .setNegativeButton(R.string.no, null);
+                    builder.setTitle(R.string.delete_all_title);
+                    builder.setIcon(R.drawable.ic_high_importance);
+                    builder.setView(view);
+                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mRepository.deleteAllTasks();
+
+                                }
+                            })
+                            .setNegativeButton(R.string.no, null);
+                }else {
+                    builder.setTitle(R.string.no_tasks);
+                    builder.setNegativeButton(R.string.exit,null);
+                }
 
         AlertDialog dialog = builder.create();
         return dialog;
