@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.maktab.taskmanager.R;
@@ -48,6 +49,7 @@ public abstract class TabsFragment extends Fragment {
     private FloatingActionButton mActionButtonInsert;
     private FloatingActionButton mActionButtonDelete;
     private FloatingActionButton mActionButtonLogOut;
+    private FloatingActionsMenu mFloatingActionsMenu;
     private boolean isVisible;
 
     public TabsFragment() {
@@ -59,8 +61,8 @@ public abstract class TabsFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-
         updateUI();
+        mFloatingActionsMenu.collapse();
     }
 
     @Override
@@ -124,6 +126,8 @@ public abstract class TabsFragment extends Fragment {
         mActionButtonInsert = view.findViewById(R.id.fab_insert);
         mActionButtonDelete = view.findViewById(R.id.fab_delete);
         mActionButtonLogOut = view.findViewById(R.id.fab_logOut);
+        mFloatingActionsMenu = view.findViewById(R.id.fam);
+
     }
 
     private void initViews() {
