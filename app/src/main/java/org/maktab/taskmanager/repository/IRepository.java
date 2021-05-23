@@ -8,6 +8,7 @@ import java.util.UUID;
 public interface IRepository {
 
     List<Task> getTasks();
+    List<Task> searchTasks(String searchValue);
     Task getTask(UUID taskId);
     void insertTask(Task task);
     void updateTask(Task task);

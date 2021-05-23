@@ -38,7 +38,7 @@ public abstract class TabsFragment extends Fragment {
     public static final int REQUEST_CODE_INSERT_TASK = 0;
     public static final String FRAGMENT_TAG_EDIT_TASK = "EditTask";
     public static final int REQUEST_CODE_EDIT_TASK = 1;
-    public static final String FRAGMENT_TAG_DELETE_ALL_TASK = "EditTask";
+    public static final String FRAGMENT_TAG_DELETE_ALL_TASK = "DeleteAllTask";
     public static final int REQUEST_CODE_DELETE_ALL_TASK = 2;
 
     private RecyclerView mRecyclerView;

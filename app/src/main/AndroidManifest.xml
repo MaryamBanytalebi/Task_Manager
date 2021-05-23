@@ -9,13 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TaskManager">
-        <activity android:name=".activities.DoneActivity"></activity>
+        <activity android:name=".activities.SearchActivity"></activity>
+        <activity android:name=".activities.DoneActivity" />
         <activity android:name=".activities.DoingActivity" />
         <activity android:name=".activities.TodoActivity" />
         <activity android:name=".activities.SingleFragmentActivity" />
         <activity android:name=".activities.TaskListActivity" />
         <activity android:name=".activities.SignUpActivity" />
-        <activity android:name=".activities.LoginActivity" >
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

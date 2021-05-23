@@ -71,6 +71,39 @@ public class TaskDBRepository implements IRepository {
     }
 
     @Override
+    public List<Task> searchTasks(String searchValue) {
+        mTasks = new ArrayList<>();
+        String where = Cols.TITLE + " = ? or description = ? or date = ?";
+        String whereArgs[] = new String[]{searchValue};
+
+        Cursor cursor = mDatabase.query(
+                TaskDBSchema.TaskTable.NAME,
+                null,
+                where,
+                whereArgs,
+                null,
+                null,
+                null);
+
+        if (cursor == null || cursor.getCount() == 0)
+            return mTasks;
+
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Task task = extractTaskFromCursor(cursor);
+                mTasks.add(task);
+
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return mTasks;
+    }
+
+    @Override
     public Task getTask(UUID taskId) {
         String where = Cols.UUID + " = ?";
         String[] whereArgs = new String[]{taskId.toString()};
