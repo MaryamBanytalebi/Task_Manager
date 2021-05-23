@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.maktab.taskmanager.R;
 import org.maktab.taskmanager.model.Task;
@@ -34,19 +36,22 @@ public class SearchFragment extends Fragment {
     public static final String FRAGMENT_TAG_EDIT_TASK = "EditTask";
     private String mSearch;
     private IRepository mRepository;
-    private RecyclerView mRecyclerView;
     private List<Task> mTasks;
     private Task mTask;
     private SearchAdapter mAdapter;
+
+    private RecyclerView mRecyclerView;
+    private TextInputEditText mEditTextSearch;
+    private TextInputLayout mTextInputLayoutSearch;
+    private ImageView mImageViewSearch;
 
     public SearchFragment() {
         // Required empty public constructor
     }
 
-    public static SearchFragment newInstance(String search) {
+    public static SearchFragment newInstance() {
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_SEARCH, search);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,7 +61,6 @@ public class SearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mRepository = TaskDBRepository.getInstance(getActivity());
-            mSearch = getArguments().getString(ARG_SEARCH);
         }
     }
 
@@ -65,13 +69,22 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         findViews(view);
-        initViews();
-        search();
+        setListeners();
         return view;
     }
 
+    private void setListeners(){
+        mImageViewSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search();
+                initViews();
+            }
+        });
+    }
+
     private void search() {
-        mTasks = mRepository.searchTasks(mSearch);
+        mTasks = mRepository.searchTasks(mEditTextSearch.getText().toString());
     }
 
     private void initViews() {
@@ -81,6 +94,9 @@ public class SearchFragment extends Fragment {
 
     private void findViews(View view) {
         mRecyclerView = view.findViewById(R.id.recycler_search);
+        mTextInputLayoutSearch = view.findViewById(R.id.search_form);
+        mEditTextSearch = view.findViewById(R.id.search);
+        mImageViewSearch = view.findViewById(R.id.search_img);
     }
 
     private void updateUI(){
