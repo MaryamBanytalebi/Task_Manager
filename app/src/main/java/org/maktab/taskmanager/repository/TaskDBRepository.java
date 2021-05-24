@@ -8,6 +8,7 @@ import org.maktab.taskmanager.database.TaskDatabase;
 import org.maktab.taskmanager.database.TaskDatabaseDao;
 import org.maktab.taskmanager.model.Task;
 
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -85,5 +86,14 @@ public class TaskDBRepository implements IRepository {
     @Override
     public List<Task> getDoneTask() {
         return mTaskDao.getDoneTask();
+    }
+
+    @Override
+    public File getPhotoFile(Task task) {
+        // /data/data/com.example.criminalintent/files/
+        File filesDir = mContext.getFilesDir();
+
+        File photoFile = new File(filesDir, task.getPhotoFileName());
+        return photoFile;
     }
 }

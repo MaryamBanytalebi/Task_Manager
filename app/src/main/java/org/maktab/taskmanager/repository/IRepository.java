@@ -2,6 +2,7 @@ package org.maktab.taskmanager.repository;
 
 import org.maktab.taskmanager.model.Task;
 
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,4 +18,6 @@ public interface IRepository {
     List<Task> getTodoTask();
     List<Task> getDoingTask();
     List<Task> getDoneTask();
+    File getPhotoFile(Task task);
+
 }
