@@ -1,15 +1,33 @@
 package org.maktab.taskmanager.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.Date;
 import java.util.UUID;
 
+@Entity(tableName = "taskTable")
 public class Task {
 
-    private String mTitle;
-    private Date mDate;
-    private String mDescription;
-    private String mState;
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private long primaryId;
+
+    @ColumnInfo(name = "uuid")
     private UUID mId;
+
+    @ColumnInfo(name = "title")
+    private String mTitle;
+
+    @ColumnInfo(name = "date")
+    private Date mDate;
+
+    @ColumnInfo(name = "description")
+    private String mDescription;
+
+    @ColumnInfo(name = "state")
+    private String mState;
 
     public String getTitle() {
         return mTitle;
@@ -25,6 +43,14 @@ public class Task {
 
     public void setDate(Date date) {
         mDate = date;
+    }
+
+    public long getPrimaryId() {
+        return primaryId;
+    }
+
+    public void setPrimaryId(long primaryId) {
+        this.primaryId = primaryId;
     }
 
     public String getDescription() {
@@ -51,7 +77,7 @@ public class Task {
         mId = id;
     }
 
-    public Task(UUID id, String title, String description, Date date, String state) {
+   /* public Task(UUID id, String title, String description, Date date, String state) {
         mTitle = title;
         mDate = date;
         mDescription = description;
@@ -61,5 +87,13 @@ public class Task {
 
     public Task(String title, String description, Date date, String state) {
         this(UUID.randomUUID(),title,description,date,state);
+    }*/
+
+    public Task(String title, String description, Date date, String state) {
+        mId = UUID.randomUUID();
+        mTitle = title;
+        mDescription = description;
+        mDate = date;
+        mState = state;
     }
 }

@@ -5,10 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import org.maktab.taskmanager.database.TaskDBHelper;
-import org.maktab.taskmanager.database.TaskDBSchema;
+import androidx.room.Room;
+
+import org.maktab.taskmanager.database.TaskDatabase;
+import org.maktab.taskmanager.database.TaskDatabaseDao;
 import org.maktab.taskmanager.model.User;
-import org.maktab.taskmanager.database.TaskDBSchema.UserTable.Cols;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 public class UserDBRepository implements IUserRepository {
     private static UserDBRepository sInstance;
 
-    private SQLiteDatabase mDatabase;
+    private TaskDatabaseDao mTaskDao;
     private Context mContext;
 
     public static UserDBRepository getInstance(Context context) {
@@ -28,88 +29,27 @@ public class UserDBRepository implements IUserRepository {
 
     private UserDBRepository(Context context) {
         mContext = context.getApplicationContext();
-        TaskDBHelper userDBHelper = new TaskDBHelper(mContext);
+        TaskDatabase taskDatabase = Room.databaseBuilder(mContext,
+                TaskDatabase.class,
+                "task.db")
+                .allowMainThreadQueries()
+                .build();
 
-        //all 4 checks happens on getDataBase
-        mDatabase = userDBHelper.getWritableDatabase();
+        mTaskDao = taskDatabase.getTaskDatabaseDAO();
     }
+
     @Override
     public List<User> getUsers() {
-        List<User> mUsers = new ArrayList<>();
-
-        Cursor cursor = mDatabase.query(
-                TaskDBSchema.UserTable.NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null);
-
-        if (cursor == null || cursor.getCount() == 0)
-            return mUsers;
-
-        try {
-            cursor.moveToFirst();
-
-            while (!cursor.isAfterLast()) {
-                User user = extractUserFromCursor(cursor);
-                mUsers.add(user);
-
-                cursor.moveToNext();
-            }
-        } finally {
-            cursor.close();
-        }
-
-        return mUsers;
-    }
-
-    private User extractUserFromCursor(Cursor cursor) {
-        String username = cursor.getString(cursor.getColumnIndex(Cols.USERNAME));
-        String password = cursor.getString(cursor.getColumnIndex(Cols.PASSWORD));
-
-        return new User(username, password);
+       return mTaskDao.getUsers();
     }
 
     @Override
     public User getUser(String username) {
-        String where = Cols.USERNAME + " = ?";
-        String[] whereArgs = new String[]{username};
-
-        Cursor cursor = mDatabase.query(
-                TaskDBSchema.UserTable.NAME,
-                null,
-                where,
-                whereArgs,
-                null,
-                null,
-                null);
-
-        if (cursor == null || cursor.getCount() == 0)
-            return null;
-
-        try {
-            cursor.moveToFirst();
-            User user = extractUserFromCursor(cursor);
-
-            return user;
-        } finally {
-            cursor.close();
-        }
+       return mTaskDao.getUser(username);
     }
 
     @Override
     public void insertUser(User user) {
-        ContentValues values = getContentValues(user);
-        mDatabase.insert(TaskDBSchema.UserTable.NAME, null, values);
-    }
-
-    private ContentValues getContentValues(User user) {
-        ContentValues values = new ContentValues();
-        values.put(Cols.USERNAME, user.getUsername());
-        values.put(Cols.PASSWORD, user.getPassword());
-
-        return values;
+        mTaskDao.insertUser(user);
     }
 }

@@ -1,7 +1,22 @@
 package org.maktab.taskmanager.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
+@Entity(tableName = "userTable")
 public class User {
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private long primaryId;
+
+    @ColumnInfo(name = "username")
     private String mUsername;
+
+    @ColumnInfo(name = "password")
     private String mPassword;
 
     public User(String username, String password) {
@@ -23,5 +38,13 @@ public class User {
 
     public void setPassword(String password) {
         mPassword = password;
+    }
+
+    public long getPrimaryId() {
+        return primaryId;
+    }
+
+    public void setPrimaryId(long primaryId) {
+        this.primaryId = primaryId;
     }
 }

@@ -85,7 +85,8 @@ public class SearchFragment extends Fragment{
     }
 
     private void search() {
-        mTasks = mRepository.searchTasks(mEditTextSearch.getText().toString());
+        String search = "%" + mEditTextSearch.getText() + "%";
+        mTasks = mRepository.searchTasks(search);
     }
 
     private void initViews() {
