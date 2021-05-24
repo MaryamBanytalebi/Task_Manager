@@ -65,6 +65,7 @@ public class EditTaskFragment extends DialogFragment {
     private String mDate, mTime;
     private boolean mFlag;
     private String mState;
+    private ImageView mImageViewShare;
 
     public EditTaskFragment() {
         // Required empty public constructor
@@ -141,6 +142,7 @@ public class EditTaskFragment extends DialogFragment {
         mTodo = view.findViewById(R.id.radioBtn_todo_edit);
         mDoing = view.findViewById(R.id.radioBtn_doing_edit);
         mDone = view.findViewById(R.id.radioBtn_done_edit);
+        mImageViewShare = view.findViewById(R.id.share);
     }
 
     private void setData(Task task) {
@@ -238,6 +240,38 @@ public class EditTaskFragment extends DialogFragment {
             }
         });
 
+        mImageViewShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ShareCompat.IntentBuilder intentBuilder = ShareCompat.IntentBuilder.from(getActivity());
+                Intent intent = intentBuilder
+                        .setType("text/plain")
+                        .setText(shareWord())
+                        .setChooserTitle(getString(R.string.share))
+                        .createChooserIntent();
+
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            }
+        });
+
+    }
+
+    private String shareWord() {
+        String title = mTask.getTitle();
+        String description = mTask.getDescription();
+        String date = mTask.getDate().toString();
+        String state = mState;
+
+        String shareMassage = getString(
+                R.string.shareMassage,
+                title,
+                description,
+                date,
+                state);
+
+        return shareMassage;
     }
 
     private void grantWriteUriToAllResolvedActivities(Intent takePictureIntent, Uri photoUri) {

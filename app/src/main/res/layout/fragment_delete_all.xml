@@ -15,7 +15,7 @@
         android:textStyle="bold|italic"
         android:textSize="28sp"
         android:layout_gravity="center"
-        android:textColor="#000000"
+        android:textColor="@color/warning"
         android:text="@string/delete_all_question" />
 
 </FrameLayout>

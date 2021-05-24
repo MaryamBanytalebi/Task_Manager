@@ -32,7 +32,6 @@ import java.util.List;
 
 public class SearchFragment extends Fragment{
 
-    private static final String ARG_SEARCH = "search";
     public static final int REQUEST_CODE_EDIT_TASK = 0;
     public static final String FRAGMENT_TAG_EDIT_TASK = "EditTask";
     private String mSearch;
@@ -43,7 +42,6 @@ public class SearchFragment extends Fragment{
 
     private RecyclerView mRecyclerView;
     private TextInputEditText mEditTextSearch;
-    private TextInputLayout mTextInputLayoutSearch;
     private ImageView mImageViewSearch;
 
     public SearchFragment() {
@@ -96,7 +94,6 @@ public class SearchFragment extends Fragment{
 
     private void findViews(View view) {
         mRecyclerView = view.findViewById(R.id.recycler_search);
-        mTextInputLayoutSearch = view.findViewById(R.id.search_form);
         mEditTextSearch = view.findViewById(R.id.search);
         mImageViewSearch = view.findViewById(R.id.search_img);
     }

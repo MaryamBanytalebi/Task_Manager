@@ -67,6 +67,21 @@
         android:text="@string/time" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/radio_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_pickerBtn_edit"
+        android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:gravity="center"
+        android:layout_below="@id/layout_pickerBtn_edit"
+        android:orientation="horizontal">
+
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -97,11 +112,22 @@
             android:text="@string/done" />
     </RadioGroup>
 
+    </LinearLayout>
+        <ImageView
+            android:id="@+id/share"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/ic_share" />
+
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:layout_below="@id/radioGroup_edit"
+        android:layout_below="@id/radio_layout"
         android:orientation="horizontal">
 
         <Button

@@ -30,6 +30,9 @@
     <string name="no">No</string>
     <string name="exit">Exit</string>
     <string name="search">Search</string>
+    <string name="share">Share</string>
+    <string name="shareMassage"> The Task is %1$s
+       Description is %2$s, Date is %3$s , State is %4$s.</string>
     <string name="fab_insert">  Insert  </string>
     <string name="fab_delete">  Delete  </string>
     <string name="fab_logOut">  LogOut  </string>
