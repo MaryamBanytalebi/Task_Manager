@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.maktab.taskmanager.R;
+import org.maktab.taskmanager.activities.SingleFragmentActivity;
 import org.maktab.taskmanager.model.Task;
 import org.maktab.taskmanager.repository.IRepository;
 import org.maktab.taskmanager.repository.TaskDBRepository;
@@ -29,7 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment{
 
     private static final String ARG_SEARCH = "search";
     public static final int REQUEST_CODE_EDIT_TASK = 0;

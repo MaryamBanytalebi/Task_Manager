@@ -1,18 +1,28 @@
 package org.maktab.taskmanager.fragments;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ShareCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -24,44 +34,47 @@ import org.maktab.taskmanager.model.Task;
 import org.maktab.taskmanager.repository.IRepository;
 import org.maktab.taskmanager.repository.TaskDBRepository;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class EditTaskFragment extends DialogFragment {
 
-    private static final String ARG_TASK_ID = "taskId";
-    public static final int REQUEST_CODE_TIME_PICKER = 0;
-    public static final int REQUEST_CODE_DATE_PICKER = 1;
-    public static final String FRAGMENT_TAG_TIME_PICKER = "time picker";
-    public static final String FRAGMENT_TAG_DATE_PICKER = "date picker";
-    public static final String BUNDLE_KEY_DATE = "date picker";
-    public static final String BUNDLE_KEY_TIME = "time picker";
+    public static final String FRAGMENT_TAG_DATE_PICKER = "DatePicker";
+    public static final int REQUEST_CODE_DATE_PICKER = 0;
+    public static final String FRAGMENT_TAG_TIME_PICKER = "TimePicker";
+    public static final int REQUEST_CODE_TIME_PICKER = 1;
+    public static final String BUNDLE_KEY_DATE = "BUNDLE_KEY_DATE";
+    public static final String BUNDLE_KEY_TIME = "BUNDLE_KEY_TIME";
+    public static final String ARGUMENT_TASK_ID = "Bundle_key_TaskId";
+    public static final String ARGUMENT_SHARE_FEATURE = "argument_share_feature";
 
-    private Button mBtnSave, mBtnDelete, mBtnEdit, mBtnDate, mBtnTime;
-    private RadioButton mRadioButtonTodo, mRadioButtonDoing, mRadioButtonDone;
+    private Button mButtonSave, mButtonDelete, mButtonEdit, mButtonDate, mButtonTime;
+    private RadioButton mTodo, mDoing, mDone;
     private TextInputLayout mTitleForm;
     private TextInputLayout mDescriptionForm;
     private TextInputEditText mTitle;
     private TextInputEditText mDescription;
-
-    private UUID mTaskId;
     private IRepository mRepository;
     private Task mTask;
     private Calendar mCalendar;
+    private String mDate, mTime;
     private boolean mFlag;
-    private String mDate,mTime;
+    private String mState;
 
     public EditTaskFragment() {
         // Required empty public constructor
     }
 
     public static EditTaskFragment newInstance(UUID taskId) {
-        EditTaskFragment fragment = new EditTaskFragment();
+
         Bundle args = new Bundle();
-        args.putSerializable(ARG_TASK_ID, taskId);
+        args.putSerializable(ARGUMENT_TASK_ID, taskId);
+        EditTaskFragment fragment = new EditTaskFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,78 +82,111 @@ public class EditTaskFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UUID taskId = (UUID) getArguments().getSerializable(ARG_TASK_ID);
+        UUID taskId = (UUID) getArguments().getSerializable(ARGUMENT_TASK_ID);
         mRepository = TaskDBRepository.getInstance(getActivity());
         mTask = mRepository.getTask(taskId);
         mCalendar = Calendar.getInstance();
+
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_edit_task, container, false);
         findViews(view);
         if (mFlag) {
-            mBtnDate.setText(mDate);
-            mBtnTime.setText(mTime);
+            mButtonDate.setText(mDate);
+            mButtonTime.setText(mTime);
         }
         setData(mTask);
-        setListeners();
+        listeners();
         return view;
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putString(BUNDLE_KEY_DATE, mBtnDate.getText().toString());
-        outState.putString(BUNDLE_KEY_TIME, mBtnTime.getText().toString());
+        super.onSaveInstanceState(outState);
+        outState.putString(BUNDLE_KEY_DATE, mButtonDate.getText().toString());
+        outState.putString(BUNDLE_KEY_TIME, mButtonTime.getText().toString());
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode != Activity.RESULT_OK || data == null ){
+        if (resultCode != Activity.RESULT_OK || data == null)
             return;
-        }
-        if (requestCode == REQUEST_CODE_DATE_PICKER){
-            Calendar userSelectedDate = (Calendar) data.getSerializableExtra(
-                    DatePickerFragment.EXTRA_USER_SELECTED_DATE);
+
+        if (requestCode == REQUEST_CODE_DATE_PICKER) {
+            Calendar userSelectedDate =
+                    (Calendar) data.getSerializableExtra(DatePickerFragment.EXTRA_USER_SELECTED_DATE);
             updateTaskDate(userSelectedDate.getTime());
 
-        }else if (requestCode == REQUEST_CODE_TIME_PICKER){
-            Calendar userSelectedTime = (Calendar) data.getSerializableExtra(
-                    TimePickerFragment.EXTRA_USER_SELECTED_TIME);
+        } else if (requestCode == REQUEST_CODE_TIME_PICKER) {
+            Calendar userSelectedTime =
+                    (Calendar) data.getSerializableExtra(TimePickerFragment.EXTRA_USER_SELECTED_TIME);
             updateTaskTime(userSelectedTime.getTime());
         }
     }
 
-    private void setData(Task task){
+    private void findViews(View view) {
+        mTitleForm = view.findViewById(R.id.title_form_edit);
+        mTitle = view.findViewById(R.id.title_edit);
+        mDescriptionForm = view.findViewById(R.id.description_form_edit);
+        mDescription = view.findViewById(R.id.description_edit);
+        mButtonDate = view.findViewById(R.id.btn_date_edit);
+        mButtonTime = view.findViewById(R.id.btn_time_edit);
+        mButtonSave = view.findViewById(R.id.btn_save_edit);
+        mButtonDelete = view.findViewById(R.id.btn_delete_edit);
+        mButtonEdit = view.findViewById(R.id.btn_edit_edit);
+        mTodo = view.findViewById(R.id.radioBtn_todo_edit);
+        mDoing = view.findViewById(R.id.radioBtn_doing_edit);
+        mDone = view.findViewById(R.id.radioBtn_done_edit);
+    }
+
+    private void setData(Task task) {
         mTitle.setText(task.getTitle());
         mTitleForm.setEnabled(false);
         mDescription.setText(task.getDescription());
         mDescriptionForm.setEnabled(false);
         DateFormat dateFormat = getDateFormat();
-        mBtnDate.setText(dateFormat.format(task.getDate()));
-        mBtnDate.setEnabled(false);
+        mButtonDate.setText(dateFormat.format(task.getDate()));
+        mButtonDate.setEnabled(false);
         DateFormat timeFormat = getTimeFormat();
-        mBtnTime.setText(timeFormat.format(task.getDate()));
-        mBtnTime.setEnabled(false);
-        if (task.getState().equalsIgnoreCase("Todo"))
-            mRadioButtonTodo.setChecked(true);
-        else if (task.getState().equalsIgnoreCase("Doing"))
-            mRadioButtonDoing.setChecked(true);
-        else if (task.getState().equalsIgnoreCase("Done"))
-            mRadioButtonDone.setChecked(true);
-        mRadioButtonTodo.setEnabled(false);
-        mRadioButtonDoing.setEnabled(false);
-        mRadioButtonDone.setEnabled(false);
+        mButtonTime.setText(timeFormat.format(task.getDate()));
+        mButtonTime.setEnabled(false);
+        if (task.getState().equalsIgnoreCase("Todo")) {
+            mTodo.setChecked(true);
+            mState = "Todo";
+        } else if (task.getState().equalsIgnoreCase("Doing")) {
+            mDoing.setChecked(true);
+            mState = "Doing";
+        } else if (task.getState().equalsIgnoreCase("Done")) {
+            mDone.setChecked(true);
+            mState = "Done";
+        }
+        mTodo.setEnabled(false);
+        mDoing.setEnabled(false);
+        mDone.setEnabled(false);
     }
 
-    private void setListeners(){
-        mBtnSave.setOnClickListener(new View.OnClickListener() {
+    private void listeners() {
+        mButtonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                mTitleForm.setEnabled(true);
+                mDescriptionForm.setEnabled(true);
+                mButtonDate.setEnabled(true);
+                mButtonTime.setEnabled(true);
+                mTodo.setEnabled(true);
+                mDoing.setEnabled(true);
+                mDone.setEnabled(true);
+            }
+        });
+        mButtonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 if (mTitleForm.isEnabled()) {
-                    if (validInput()) {
+                    if (validateInput()) {
                         sendResult();
                         dismiss();
                     } else {
@@ -150,89 +196,99 @@ public class EditTaskFragment extends DialogFragment {
                     }
                 } else {
                     dismiss();
-                }            }
-        });
-
-        mBtnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mRepository.deleteTask(mTask);
-            }
-        });
-
-        mBtnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (validInput()){
-                    sendResult();
                 }
             }
         });
+        mButtonDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        mBtnTime.setOnClickListener(new View.OnClickListener() {
+                DatePickerFragment datePickerFragment =
+                        DatePickerFragment.newInstance(mCalendar.getTime());
+
+                //create parent-child relations between CDF and DPF
+                datePickerFragment.setTargetFragment(EditTaskFragment.this,
+                        REQUEST_CODE_DATE_PICKER);
+
+                datePickerFragment.show(
+                        getActivity().getSupportFragmentManager(),
+                        FRAGMENT_TAG_DATE_PICKER);
+
+            }
+        });
+        mButtonTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 TimePickerFragment timePickerFragment =
                         TimePickerFragment.newInstance(mCalendar.getTime());
+
                 timePickerFragment.setTargetFragment(EditTaskFragment.this,
                         REQUEST_CODE_TIME_PICKER);
-                timePickerFragment.show(getActivity().getSupportFragmentManager(),
+
+                timePickerFragment.show(
+                        getActivity().getSupportFragmentManager(),
                         FRAGMENT_TAG_TIME_PICKER);
             }
         });
-
-        mBtnDate.setOnClickListener(new View.OnClickListener() {
+        mButtonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                DatePickerFragment datePickerFragment =
-                        DatePickerFragment.newInstance(mCalendar.getTime());
-                datePickerFragment.setTargetFragment(EditTaskFragment.this,
-                        REQUEST_CODE_TIME_PICKER);
-                datePickerFragment.show(getActivity().getSupportFragmentManager(),
-                        FRAGMENT_TAG_TIME_PICKER);
+            public void onClick(View v) {
+                mRepository.deleteTask(mTask);
+                dismiss();
             }
         });
+
     }
 
-    private boolean validInput() {
-        if (mTitle.getText() != null && mDescription.getText() != null &&
-                mBtnDate.getText() != null && mBtnTime != null &&
-                (mRadioButtonDoing.isChecked()
-                        || mRadioButtonDone.isChecked()
-                        || mRadioButtonTodo.isChecked())){
-            return true;
-        }else
-            return false;
+    private void grantWriteUriToAllResolvedActivities(Intent takePictureIntent, Uri photoUri) {
+        List<ResolveInfo> activities = getActivity().getPackageManager()
+                .queryIntentActivities(
+                        takePictureIntent,
+                        PackageManager.MATCH_DEFAULT_ONLY);
+
+        for (ResolveInfo activity : activities) {
+            getActivity().grantUriPermission(
+                    activity.activityInfo.packageName,
+                    photoUri,
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
     }
 
-    private void sendResult(){
+    private void sendResult() {
         Fragment fragment = getTargetFragment();
         int requestCode = getTargetRequestCode();
         int resultCode = Activity.RESULT_OK;
         Intent intent = new Intent();
         editTask();
         updateTasks(mTask);
-        /* extractTask();*/
-//        intent.putExtra(EXTRA_USER_SELECTED_DATE, userSelectedTask);
 
         fragment.onActivityResult(requestCode, resultCode, intent);
     }
 
-    private void editTask(){
+    private boolean validateInput() {
+        if (mTitle.getText() != null && mDescription.getText() != null && mButtonDate.getText() != null &&
+                mButtonTime.getText() != null && (mTodo.isChecked() || mDoing.isChecked()
+                || mDone.isChecked())) {
+            return true;
+        } else
+            return false;
+    }
+
+    private void editTask() {
         String state = "";
-        if (mRadioButtonDoing.isChecked())
-            state = "DOING";
-        if (mRadioButtonTodo.isChecked())
-            state = "TODO";
-        if (mRadioButtonDone.isChecked())
-            state = "DONE";
+        if (mTodo.isChecked())
+            state = "Todo";
+        else if (mDoing.isChecked())
+            state = "Doing";
+        else if (mDone.isChecked())
+            state = "Done";
         mTask.setTitle(mTitle.getText().toString());
         mTask.setDescription(mDescription.getText().toString());
         mTask.setDate(mCalendar.getTime());
         mTask.setState(state);
     }
 
-    private void updateTasks(Task task){
+    private void updateTasks(Task task) {
         mRepository.updateTask(task);
     }
 
@@ -242,11 +298,11 @@ public class EditTaskFragment extends DialogFragment {
         int year = calendar.get(Calendar.YEAR);
         int monthOfYear = calendar.get(Calendar.MONTH);
         int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-        mCalendar.set(Calendar.YEAR,year);
-        mCalendar.set(Calendar.MONTH,monthOfYear);
-        mCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+        mCalendar.set(Calendar.YEAR, year);
+        mCalendar.set(Calendar.MONTH, monthOfYear);
+        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         DateFormat dateFormat = getDateFormat();
-        mBtnDate.setText(dateFormat.format(userSelectedDate));
+        mButtonDate.setText(dateFormat.format(userSelectedDate));
 
     }
 
@@ -255,10 +311,10 @@ public class EditTaskFragment extends DialogFragment {
         calendar.setTime(userSelectedTime);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
-        mCalendar.set(Calendar.HOUR_OF_DAY,hour);
-        mCalendar.set(Calendar.MINUTE,minute);
+        mCalendar.set(Calendar.HOUR_OF_DAY, hour);
+        mCalendar.set(Calendar.MINUTE, minute);
         DateFormat timeFormat = getTimeFormat();
-        mBtnTime.setText(timeFormat.format(userSelectedTime));
+        mButtonTime.setText(timeFormat.format(userSelectedTime));
     }
 
 
@@ -270,20 +326,5 @@ public class EditTaskFragment extends DialogFragment {
     private DateFormat getTimeFormat() {
         //"HH:mm:ss"
         return new SimpleDateFormat("h:mm a");
-    }
-
-    private void findViews(View view) {
-        mTitleForm = view.findViewById(R.id.title_form_edit);
-        mTitle = view.findViewById(R.id.title_edit);
-        mDescriptionForm = view.findViewById(R.id.description_form_edit);
-        mDescription = view.findViewById(R.id.description_edit);
-        mBtnDate = view.findViewById(R.id.btn_date_edit);
-        mBtnTime = view.findViewById(R.id.btn_time_edit);
-        mBtnSave = view.findViewById(R.id.btn_save_edit);
-        mBtnDelete = view.findViewById(R.id.btn_delete_edit);
-        mBtnEdit = view.findViewById(R.id.btn_edit_edit);
-        mRadioButtonTodo = view.findViewById(R.id.radioBtn_todo_edit);
-        mRadioButtonDoing = view.findViewById(R.id.radioBtn_doing_edit);
-        mRadioButtonDone = view.findViewById(R.id.radioBtn_done_edit);
     }
 }

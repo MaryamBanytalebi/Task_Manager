@@ -20,8 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.maktab.taskmanager.R;
 import org.maktab.taskmanager.model.Task;
@@ -122,10 +122,9 @@ public abstract class TabsFragment extends Fragment {
     private void findViews(View view) {
         mRecyclerView = view.findViewById(R.id.recycler);
         mLayoutEmpty = view.findViewById(R.id.layout_empty);
-        mActionButtonInsert = view.findViewById(R.id.fam);
-        mActionButtonInsert = view.findViewById(R.id.fab_insert);
         mActionButtonDelete = view.findViewById(R.id.fab_delete);
         mActionButtonLogOut = view.findViewById(R.id.fab_logOut);
+        mActionButtonInsert = view.findViewById(R.id.fab_insert);
         mFloatingActionsMenu = view.findViewById(R.id.fam);
 
     }
