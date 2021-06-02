@@ -30,8 +30,11 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.maktab.taskmanager.R;
 import org.maktab.taskmanager.model.Task;
+import org.maktab.taskmanager.model.User;
 import org.maktab.taskmanager.repository.IRepository;
+import org.maktab.taskmanager.repository.IUserRepository;
 import org.maktab.taskmanager.repository.TaskDBRepository;
+import org.maktab.taskmanager.repository.UserDBRepository;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -39,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class InsertTaskFragment extends DialogFragment {
 
@@ -50,6 +54,8 @@ public class InsertTaskFragment extends DialogFragment {
     public static final String BUNDLE_KEY_DATE = "BUNDLE_KEY_DATE";
     public static final String BUNDLE_KEY_TIME = "BUNDLE_KEY_TIME";
     public static final String AUTHORITY = "org.maktab.taskmanager.fileProvider";
+    public static final String ARGUMENT_USERNAME = "arg_Username";
+    public static final String ARGUMENT_PASSWORD = "arg_Password";
     public static final String TAG = "ETF";
 
 
@@ -65,14 +71,19 @@ public class InsertTaskFragment extends DialogFragment {
     private boolean mFlag;
     private ImageView mImageTaskPicture, mImageTakePicture;
     private File mPhotoFile;
+    private String mUsername,mPassword;
+    private User mUser;
+    private IUserRepository mIUserRepository;
 
     public InsertTaskFragment() {
         // Required empty public constructor
     }
 
-    public static InsertTaskFragment newInstance() {
+    public static InsertTaskFragment newInstance(String username, String password) {
         InsertTaskFragment fragment = new InsertTaskFragment();
         Bundle args = new Bundle();
+        args.putString(ARGUMENT_USERNAME,username);
+        args.putString(ARGUMENT_PASSWORD,password);
         fragment.setArguments(args);
         return fragment;
     }
@@ -90,6 +101,11 @@ public class InsertTaskFragment extends DialogFragment {
         mRepository = TaskDBRepository.getInstance(getActivity());
         createTask();
         mPhotoFile = mRepository.getPhotoFile(mTask);
+        mUsername = getArguments().getString(ARGUMENT_USERNAME);
+        mPassword = getArguments().getString(ARGUMENT_PASSWORD);
+        mIUserRepository = UserDBRepository.getInstance(getActivity());
+        mUser = mIUserRepository.getUser(Objects.requireNonNull(mUsername),mPassword);
+
     }
 
     @Override
@@ -303,6 +319,7 @@ public class InsertTaskFragment extends DialogFragment {
         mTask.setDescription(mDescription.getText().toString());
         mTask.setDate(mCalendar.getTime());
         mTask.setState(state);
+        mTask.setUserIdFk(mUser.getPrimaryId());
     }
 
     private void updateTaskDate(Date userSelectedDate) {

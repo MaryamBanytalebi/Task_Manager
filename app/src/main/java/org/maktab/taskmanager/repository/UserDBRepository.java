@@ -9,6 +9,7 @@ import androidx.room.Room;
 
 import org.maktab.taskmanager.database.TaskDatabase;
 import org.maktab.taskmanager.database.TaskDatabaseDao;
+import org.maktab.taskmanager.model.Task;
 import org.maktab.taskmanager.model.User;
 
 import java.util.ArrayList;
@@ -44,12 +45,32 @@ public class UserDBRepository implements IUserRepository {
     }
 
     @Override
-    public User getUser(String username) {
-       return mTaskDao.getUser(username);
+    public User getUser(String username ,String password) {
+       return mTaskDao.getUser(username ,password);
     }
 
     @Override
     public void insertUser(User user) {
         mTaskDao.insertUser(user);
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        mTaskDao.deleteUser(user);
+    }
+
+    @Override
+    public void deleteUserTasks(long userId) {
+        mTaskDao.deleteUserTasks(userId);
+    }
+
+    @Override
+    public List<Task> getUserTasks(long userId) {
+        return mTaskDao.getUserTasks(userId);
+    }
+
+    @Override
+    public int numberOfTask(long userId) {
+        return mTaskDao.numberOfTask(userId);
     }
 }

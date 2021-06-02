@@ -23,7 +23,7 @@ public interface TaskDatabaseDao {
     void insertTask(Task task);
 
     @Insert
-    void insertTasks(Task... tasks);
+    void insertTasks(List<Task> tasks);
 
     @Delete
     void deleteTask(Task task);
@@ -34,14 +34,14 @@ public interface TaskDatabaseDao {
     @Query("SELECT * FROM task")
     List<Task> getTasks();
 
-    @Query("SELECT * FROM task WHERE state ='Todo'")
-    List<Task> getTodoTask();
+    @Query("SELECT * FROM task WHERE state ='Todo' AND user_id_fk=:userId")
+    List<Task> getTodoTask(long userId);
 
-    @Query("SELECT * FROM task WHERE state ='Doing'")
-    List<Task> getDoingTask();
+    @Query("SELECT * FROM task WHERE state ='Doing' AND user_id_fk=:userId")
+    List<Task> getDoingTask(long userId);
 
-    @Query("SELECT * FROM task WHERE state ='Done'")
-    List<Task> getDoneTask();
+    @Query("SELECT * FROM task WHERE state ='Done' AND user_id_fk=:userId")
+    List<Task> getDoneTask(long userId);
 
     @Query("SELECT * FROM task WHERE uuid =:inputUUID")
     Task getTask(UUID inputUUID);
@@ -52,9 +52,21 @@ public interface TaskDatabaseDao {
     @Insert
     void insertUser(User user);
 
+    @Delete
+    void deleteUser(User user);
+
     @Query("SELECT * FROM user")
     List<User> getUsers();
 
-    @Query("SELECT * FROM user WHERE  username=:name")
-    User getUser(String name);
+    @Query("SELECT * FROM user WHERE  username=:name AND password=:pass")
+    User getUser(String name, String pass);
+
+    @Query("DELETE FROM task WHERE user_id_fk=:userId")
+    void deleteUserTasks(long userId);
+
+    @Query("SELECT * FROM task WHERE user_id_fk=:userId")
+    List<Task> getUserTasks (long userId);
+
+    @Query("SELECT COUNT(*) FROM task WHERE user_id_fk=:userId GROUP BY user_id_fk")
+    int numberOfTask(long userId);
 }

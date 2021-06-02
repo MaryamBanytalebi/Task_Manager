@@ -44,8 +44,9 @@ public class TabsFragment extends Fragment {
     public static final int REQUEST_CODE_EDIT_TASK = 1;
     public static final String FRAGMENT_TAG_DELETE_ALL_TASK = "DeleteAllTask";
     public static final int REQUEST_CODE_DELETE_ALL_TASK = 2;
-    public static final String KEY_VALUE_STATE = "Key_Value_State";
-    public static final String KEY_VALUE_USERNAME = "KEY_VALUE_Username";
+    public static final String ARGUMENT_STATE = "arg_State";
+    public static final String ARGUMENT_USERNAME = "arg_Username";
+    public static final String ARGUMENT_PASSWORD = "arg_Password";
 
 
     private RecyclerView mRecyclerView;
@@ -59,7 +60,7 @@ public class TabsFragment extends Fragment {
     private FloatingActionButton mActionButtonLogOut;
     private FloatingActionsMenu mFloatingActionsMenu;
     private boolean isVisible;
-    private String mState,mUsername;
+    private String mState,mUsername,mPassword;
     private User mUser;
 
     public TabsFragment() {
@@ -68,11 +69,12 @@ public class TabsFragment extends Fragment {
 
     //public Fragment createFragment();
 
-    public static TabsFragment newInstance(String username,String state) {
+    public static TabsFragment newInstance(String username, String password, String state) {
 
         Bundle args = new Bundle();
-        args.putString(KEY_VALUE_STATE,state);
-        args.putString(KEY_VALUE_USERNAME,username);
+        args.putString(ARGUMENT_STATE,state);
+        args.putString(ARGUMENT_USERNAME,username);
+        args.putString(ARGUMENT_PASSWORD,password);
         TabsFragment fragment = new TabsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -91,9 +93,10 @@ public class TabsFragment extends Fragment {
 
         mRepository = TaskDBRepository.getInstance(getActivity());
         mIUserRepository = UserDBRepository.getInstance(getActivity());
-        mState = getArguments().getString(KEY_VALUE_STATE);
-        mUsername = getArguments().getString(KEY_VALUE_USERNAME);
-        mUser = mIUserRepository.getUser(Objects.requireNonNull(mUsername));
+        mState = getArguments().getString(ARGUMENT_STATE);
+        mUsername = getArguments().getString(ARGUMENT_USERNAME);
+        mPassword = getArguments().getString(ARGUMENT_PASSWORD);
+        mUser = mIUserRepository.getUser(Objects.requireNonNull(mUsername),mPassword);
 
     }
 
@@ -163,7 +166,7 @@ public class TabsFragment extends Fragment {
         mActionButtonInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InsertTaskFragment insertTaskFragment = InsertTaskFragment.newInstance();
+                InsertTaskFragment insertTaskFragment = InsertTaskFragment.newInstance(mUsername,mPassword);
 
                 insertTaskFragment.setTargetFragment(
                         TabsFragment.this,
@@ -214,11 +217,11 @@ public class TabsFragment extends Fragment {
 
     private void checkEmptyLayout() {
         if (mState.equalsIgnoreCase("todo"))
-            mTasks = mRepository.getTodoTask();
+            mTasks = mRepository.getTodoTask(mUser.getPrimaryId());
         else if (mState.equalsIgnoreCase("doing"))
-            mTasks = mRepository.getDoingTask();
+            mTasks = mRepository.getDoingTask(mUser.getPrimaryId());
         else if (mState.equalsIgnoreCase("done"))
-            mTasks = mRepository.getDoneTask();
+            mTasks = mRepository.getDoneTask(mUser.getPrimaryId());
 
         if (mTasks.size()==0)
             mLayoutEmpty.setVisibility(View.VISIBLE);

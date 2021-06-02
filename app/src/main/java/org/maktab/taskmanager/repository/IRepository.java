@@ -12,12 +12,13 @@ public interface IRepository {
     List<Task> searchTasks(String searchValue);
     Task getTask(UUID taskId);
     void insertTask(Task task);
+    void insertTasks(List<Task> tasks);
     void updateTask(Task task);
     void deleteTask(Task task);
     void deleteAllTasks();
-    List<Task> getTodoTask();
-    List<Task> getDoingTask();
-    List<Task> getDoneTask();
+    List<Task> getTodoTask(long userId);
+    List<Task> getDoingTask(long userId);
+    List<Task> getDoneTask(long userId);
     File getPhotoFile(Task task);
 
 }

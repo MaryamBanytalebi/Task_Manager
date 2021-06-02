@@ -13,18 +13,21 @@ import org.maktab.taskmanager.fragments.TaskListFragment;
 public class TaskListActivity extends SingleFragmentActivity {
 
     public static final String EXTRA_USERNAME = "org.maktab.taskmanager.activities.extra_username";
+    public static final String EXTRA_PASSWORD = "org.maktab.taskmanager.activities.extra_password";
     private static String mUsername;
+    private static String mPassword;
 
     @Override
     public Fragment createFragment() {
-        TaskListFragment taskListFragment = TaskListFragment.newInstance(mUsername);
+        TaskListFragment taskListFragment = TaskListFragment.newInstance(mUsername,mPassword);
         return taskListFragment;
     }
 
-    public static Intent newIntent(Context context, String username){
+    public static Intent newIntent(Context context, String username, String password){
         mUsername = username;
         Intent intent = new Intent(context, TaskListActivity.class);
         intent.putExtra(EXTRA_USERNAME,username);
+        intent.putExtra(EXTRA_PASSWORD,password);
         return intent;
     }
 }

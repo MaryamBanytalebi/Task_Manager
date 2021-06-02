@@ -29,6 +29,9 @@ public class Task {
     @ColumnInfo(name = "state")
     private String mState;
 
+    @ColumnInfo(name = "user_id_fk")
+    private long userIdFk;
+
     public String getTitle() {
         return mTitle;
     }
@@ -77,7 +80,15 @@ public class Task {
         mId = id;
     }
 
-   /* public Task(UUID id, String title, String description, Date date, String state) {
+    public long getUserIdFk() {
+        return userIdFk;
+    }
+
+    public void setUserIdFk(long userIdFk) {
+        this.userIdFk = userIdFk;
+    }
+
+    /* public Task(UUID id, String title, String description, Date date, String state) {
         mTitle = title;
         mDate = date;
         mDescription = description;
