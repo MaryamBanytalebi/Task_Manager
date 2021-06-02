@@ -7,11 +7,11 @@ import androidx.room.PrimaryKey;
 import java.util.Date;
 import java.util.UUID;
 
-@Entity(tableName = "taskTable")
+@Entity(tableName = "task")
 public class Task {
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = "task_id")
     private long primaryId;
 
     @ColumnInfo(name = "uuid")
