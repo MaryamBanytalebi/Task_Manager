@@ -2,10 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.maktab.taskmanager">
 
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.type.watch" />
 
     <application
         android:allowBackup="true"
@@ -14,7 +18,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TaskManager">
-        <activity android:name=".activities.SearchActivity"></activity>
+        <activity android:name=".activities.AdminActivity"></activity>
+        <activity
+            android:name=".activities.SearchActivity"
+            android:parentActivityName=".activities.TaskListActivity" />
         <activity android:name=".activities.DoneActivity" />
         <activity android:name=".activities.DoingActivity" />
         <activity android:name=".activities.TodoActivity" />
@@ -28,6 +35,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="org.maktab.taskmanager.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/files_path" />
+        </provider>
     </application>
 
 </manifest>

@@ -18,6 +18,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.maktab.taskmanager.R;
+import org.maktab.taskmanager.activities.AdminActivity;
 import org.maktab.taskmanager.activities.SignUpActivity;
 import org.maktab.taskmanager.activities.TaskListActivity;
 import org.maktab.taskmanager.model.User;
@@ -35,7 +36,7 @@ public class LoginFragment extends Fragment {
     private TextInputLayout mPasswordForm;
     private TextInputEditText mUsername;
     private TextInputEditText mPassword;
-    private Button mBtnSignUp,mBtnLogin;
+    private Button mBtnSignUp,mBtnLogin,mBtnAdmin;
     private UserDBRepository mUserRepository;
 
     private String user, pass;
@@ -116,6 +117,20 @@ public class LoginFragment extends Fragment {
 
             }
         });
+
+        mBtnAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mUsername.getText().toString().equalsIgnoreCase("Admin") &&
+                        mPassword.getText().toString().equalsIgnoreCase("4321")){
+                    Intent intent = AdminActivity.newIntent(getActivity());
+                    startActivity(intent);
+                }
+                else{
+                    callToast(R.string.toast_admin);
+                }
+            }
+        });
     }
 
     private void findViews(View view) {
@@ -125,6 +140,7 @@ public class LoginFragment extends Fragment {
         mPasswordForm = view.findViewById(R.id.username_form_login);
         mBtnLogin = view.findViewById(R.id.btnLogin_Login);
         mBtnSignUp = view.findViewById(R.id.btnSignUp_Login);
+        mBtnAdmin = view.findViewById(R.id.btnAdmin_login);
     }
 
     private boolean validateInput() {

@@ -255,9 +255,6 @@ public class InsertTaskFragment extends DialogFragment {
     private void updatePhotoView() {
         if (mPhotoFile == null || !mPhotoFile.exists())
             return;
-
-
-        //this has a better memory management.
         Bitmap bitmap = org.maktab.taskmanager.utils.PictureUtils.getScaledBitmap(mPhotoFile.getAbsolutePath(), getActivity());
         mImageTaskPicture.setImageBitmap(bitmap);
     }

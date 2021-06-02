@@ -90,7 +90,6 @@ public class TaskDBRepository implements IRepository {
 
     @Override
     public File getPhotoFile(Task task) {
-        // /data/data/com.example.criminalintent/files/
         File filesDir = mContext.getFilesDir();
 
         File photoFile = new File(filesDir, task.getPhotoFileName());

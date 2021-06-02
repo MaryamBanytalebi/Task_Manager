@@ -54,7 +54,6 @@ public class EditTaskFragment extends DialogFragment {
     public static final String BUNDLE_KEY_DATE = "BUNDLE_KEY_DATE";
     public static final String BUNDLE_KEY_TIME = "BUNDLE_KEY_TIME";
     public static final String ARGUMENT_TASK_ID = "Bundle_key_TaskId";
-    public static final String ARGUMENT_SHARE_FEATURE = "argument_share_feature";
 
     private Button mButtonSave, mButtonDelete, mButtonEdit, mButtonDate, mButtonTime;
     private RadioButton mTodo, mDoing, mDone;

@@ -36,6 +36,8 @@
     <string name="fab_insert">  Insert  </string>
     <string name="fab_delete">  Delete  </string>
     <string name="fab_logOut">  LogOut  </string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login_as_admin">Login as Admin</string>
+    <string name="toast_admin">The admin username and password are incorrect!</string>
+    <string name="number_of_tasks">Number of tasks:</string>
+    <string name="registry_date">Registry date:</string>
 </resources>

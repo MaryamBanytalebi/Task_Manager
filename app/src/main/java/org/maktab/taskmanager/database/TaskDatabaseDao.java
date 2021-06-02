@@ -33,14 +33,14 @@ public interface TaskDatabaseDao {
     @Query("SELECT * FROM taskTable")
     List<Task> getTasks();
 
-    @Query("SELECT * FROM taskTable WHERE state = 'Todo'")
+    @Query("SELECT * FROM taskTable WHERE state ='Todo'")
     List<Task> getTodoTask();
 
-    @Query("SELECT * FROM taskTable WHERE state = 'Done'")
-    List<Task> getDoneTask();
-
-    @Query("SELECT * FROM taskTable WHERE state = 'Doing'")
+    @Query("SELECT * FROM taskTable WHERE state ='Doing'")
     List<Task> getDoingTask();
+
+    @Query("SELECT * FROM taskTable WHERE state ='Done'")
+    List<Task> getDoneTask();
 
     @Query("SELECT * FROM taskTable WHERE uuid =:inputUUID")
     Task getTask(UUID inputUUID);
@@ -56,5 +56,8 @@ public interface TaskDatabaseDao {
 
     @Query("SELECT * FROM userTable WHERE  username=:name")
     User getUser(String name);
+
+
+
 
 }
