@@ -27,7 +27,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class AdminFragment extends Fragment {
+public class AdminListFragment extends Fragment {
 
     private RecyclerView mRecyclerViewAdmin;
     private IUserRepository mIUserRepository;
@@ -38,12 +38,12 @@ public class AdminFragment extends Fragment {
     private IRepository mIRepository;
     private RelativeLayout mRelativeLayout;
 
-    public AdminFragment() {
+    public AdminListFragment() {
         // Required empty public constructor
     }
 
-    public static AdminFragment newInstance() {
-        AdminFragment fragment = new AdminFragment();
+    public static AdminListFragment newInstance() {
+        AdminListFragment fragment = new AdminListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -60,7 +60,7 @@ public class AdminFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_admin, container, false);
+        View view = inflater.inflate(R.layout.fragment_admin_list, container, false);
         findViews(view);
         initViews();
         return view;

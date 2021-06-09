@@ -18,7 +18,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.maktab.taskmanager.R;
-import org.maktab.taskmanager.activities.AdminActivity;
+import org.maktab.taskmanager.activities.AdminListActivity;
 import org.maktab.taskmanager.activities.SignUpActivity;
 import org.maktab.taskmanager.activities.TaskListActivity;
 import org.maktab.taskmanager.model.User;
@@ -124,7 +124,7 @@ public class LoginFragment extends Fragment {
             public void onClick(View view) {
                 if (mUsername.getText().toString().equalsIgnoreCase("Admin") &&
                         mPassword.getText().toString().equalsIgnoreCase("4321")){
-                    Intent intent = AdminActivity.newIntent(getActivity());
+                    Intent intent = AdminListActivity.newIntent(getActivity());
                     startActivity(intent);
                 }
                 else{

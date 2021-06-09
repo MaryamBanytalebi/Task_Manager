@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/admin_layout"
     android:padding="8dp"
-    tools:context=".fragments.AdminFragment">
+    tools:context=".fragments.AdminListFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

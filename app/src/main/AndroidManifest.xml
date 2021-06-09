@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TaskManager">
-        <activity android:name=".activities.AdminActivity"></activity>
+        <activity android:name=".activities.AdminDetailActivity"></activity>
+        <activity android:name=".activities.AdminListActivity" />
         <activity
             android:name=".activities.SearchActivity"
             android:parentActivityName=".activities.TaskListActivity" />
