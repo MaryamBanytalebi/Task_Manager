@@ -50,10 +50,12 @@ public class EditTaskFragment extends DialogFragment {
     public static final int REQUEST_CODE_TIME_PICKER = 1;
     private static final int REQUEST_CODE_IMAGE_CAPTURE = 2;
     public static final String TAG = "ETF";
-    public static final String AUTHORITY = "org.maktab.taskmanager.fileProvider";
+    public static final String AUTHORITY = "org.maktab.taskManager.fileProvider";
     public static final String BUNDLE_KEY_DATE = "BUNDLE_KEY_DATE";
     public static final String BUNDLE_KEY_TIME = "BUNDLE_KEY_TIME";
     public static final String ARGUMENT_TASK_ID = "Bundle_key_TaskId";
+    public static final String ARGUMENT_SHARE_FEATURE = "argument_share_feature";
+
 
     private Button mButtonSave, mButtonDelete, mButtonEdit, mButtonDate, mButtonTime;
     private RadioButton mTodo, mDoing, mDone;
@@ -69,15 +71,18 @@ public class EditTaskFragment extends DialogFragment {
     private String mState;
     private ImageView mImageViewShare,mImageViewTaskPicture,mImageViewTakePicture;
     private File mPhotoFile;
+    private boolean mShareFeature;
+
 
     public EditTaskFragment() {
         // Required empty public constructor
     }
 
-    public static EditTaskFragment newInstance(UUID taskId) {
+    public static EditTaskFragment newInstance(UUID taskId, boolean shareFeature) {
 
         Bundle args = new Bundle();
         args.putSerializable(ARGUMENT_TASK_ID, taskId);
+        args.putBoolean(ARGUMENT_SHARE_FEATURE, shareFeature);
         EditTaskFragment fragment = new EditTaskFragment();
         fragment.setArguments(args);
         return fragment;
@@ -87,6 +92,7 @@ public class EditTaskFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID taskId = (UUID) getArguments().getSerializable(ARGUMENT_TASK_ID);
+        mShareFeature = getArguments().getBoolean(ARGUMENT_SHARE_FEATURE);
         mRepository = TaskDBRepository.getInstance(getActivity());
         mTask = mRepository.getTask(taskId);
         mCalendar = Calendar.getInstance();
@@ -104,6 +110,9 @@ public class EditTaskFragment extends DialogFragment {
             mButtonDate.setText(mDate);
             mButtonTime.setText(mTime);
         }
+        if (!mShareFeature)
+            mImageViewShare.setVisibility(View.GONE);
+
         setData(mTask);
         listeners();
         updatePhotoView();
@@ -257,21 +266,23 @@ public class EditTaskFragment extends DialogFragment {
             }
         });
 
-        mImageViewShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ShareCompat.IntentBuilder intentBuilder = ShareCompat.IntentBuilder.from(getActivity());
-                Intent intent = intentBuilder
-                        .setType("text/plain")
-                        .setText(shareWord())
-                        .setChooserTitle(getString(R.string.share))
-                        .createChooserIntent();
+        if (mShareFeature) {
+            mImageViewShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ShareCompat.IntentBuilder intentBuilder = ShareCompat.IntentBuilder.from(getActivity());
+                    Intent intent = intentBuilder
+                            .setType("text/plain")
+                            .setText(shareWord())
+                            .setChooserTitle(getString(R.string.share))
+                            .createChooserIntent();
 
-                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivity(intent);
+                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
                 }
-            }
-        });
+            });
+        }
 
         mImageViewTakePicture.setOnClickListener(new View.OnClickListener() {
             @Override

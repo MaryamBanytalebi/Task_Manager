@@ -121,12 +121,12 @@ public class AdminDetailFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AdminEditTaskFragment adminEditTaskFragment =
-                            AdminEditTaskFragment.newInstance(mTask.getId());
-                    adminEditTaskFragment.setTargetFragment(
+                    EditTaskFragment editTaskFragment =
+                            EditTaskFragment.newInstance(mTask.getId());
+                    editTaskFragment.setTargetFragment(
                             AdminDetailFragment.this, REQUEST_CODE_EDIT_TASK);
 
-                    adminEditTaskFragment.show(
+                    editTaskFragment.show(
                             getActivity().getSupportFragmentManager(), FRAGMENT_TAG_EDIT_TASK);
 
                 }

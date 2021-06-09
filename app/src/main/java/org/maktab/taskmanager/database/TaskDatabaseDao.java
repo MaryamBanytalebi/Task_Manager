@@ -46,8 +46,8 @@ public interface TaskDatabaseDao {
     @Query("SELECT * FROM task WHERE uuid =:inputUUID")
     Task getTask(UUID inputUUID);
 
-    @Query("SELECT * FROM task WHERE title LIKE :searchValue OR description LIKE :searchValue OR date LIKE :searchValue")
-    List<Task> searchTasks(String searchValue);
+    @Query("SELECT * FROM task WHERE user_id_fk=:userId AND title LIKE :searchValue OR description LIKE :searchValue OR date LIKE :searchValue")
+    List<Task> searchTasks(String searchValue, long userId);
 
     @Insert
     void insertUser(User user);

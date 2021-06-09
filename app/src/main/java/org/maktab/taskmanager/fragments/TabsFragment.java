@@ -244,7 +244,7 @@ public class TabsFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
 
-                    EditTaskFragment editTaskFragment = EditTaskFragment.newInstance(mTask.getId());
+                    EditTaskFragment editTaskFragment = EditTaskFragment.newInstance(mTask.getId(),true);
 
                     editTaskFragment.setTargetFragment(
                             TabsFragment.this,
